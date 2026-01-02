@@ -2,6 +2,8 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SmoothScroll from "@/components/SmoothScroll";
+
 
 
 const inter = Inter({
@@ -22,6 +24,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen bg-zinc-950 text-zinc-100 antialiased">
         <div className="mx-auto max-w-6xl px-5">
+          <SmoothScroll />
           <Navbar />
           <main className="pb-20">{children}</main>
           <Footer />

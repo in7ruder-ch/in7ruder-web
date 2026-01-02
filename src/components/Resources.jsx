@@ -15,7 +15,7 @@ export default function Resources() {
   return (
     <section id="resources" className="py-16 border-t border-white/10">
       <div className="grid gap-8 md:grid-cols-12 items-start">
-        <div className="md:col-span-5">
+        <div className="md:col-span-5 self-center">
           <p className="text-sm text-zinc-400">Resources</p>
           <h2 className="mt-2 text-2xl md:text-3xl font-semibold tracking-tight">
             Practical security resources

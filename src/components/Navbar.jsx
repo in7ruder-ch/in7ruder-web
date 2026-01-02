@@ -10,7 +10,7 @@ export default function Navbar() {
           <a href="#services" className="hover:text-white transition">
             Services
           </a>
-          <a href="#proof" className="hover:text-white transition">
+          <a href="#whoami" className="hover:text-white transition">
             Proof
           </a>
           <a href="#resources" className="hover:text-white transition">

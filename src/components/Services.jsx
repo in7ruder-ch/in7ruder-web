@@ -28,7 +28,7 @@ export default function Services() {
           Three offers. Clear outcomes.
         </h2>
         <p className="text-zinc-300 max-w-2xl">
-          Delivery, training, or validation. Each designed to turn into concrete
+          Delivery, training or validation. Each designed to turn into concrete
           next steps.
         </p>
       </div>

@@ -25,7 +25,7 @@ export default function Hero() {
                     <div className="flex flex-col sm:flex-row gap-3">
                         <a
                             href="#contact"
-                            className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition"
+                            className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
                         >
                             Request a quote
                         </a>

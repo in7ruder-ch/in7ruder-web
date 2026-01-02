@@ -58,7 +58,7 @@ export default function Resources() {
                 href={r.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition"
+                className="shrink-0 inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
               >
                 {r.cta}
               </a>

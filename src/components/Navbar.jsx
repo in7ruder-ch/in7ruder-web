@@ -132,7 +132,7 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/#contact"
-            className="hidden md:inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition"
+            className="hidden md:inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:text-white! hover:bg-(--color-brand) transition-colors"
             onClick={closeAll}
           >
             Request a quote
@@ -209,7 +209,7 @@ export default function Navbar() {
 
               <Link
                 href="/#contact"
-                className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition"
+                className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
                 onClick={closeAll}
               >
                 Request a quote

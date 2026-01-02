@@ -24,7 +24,7 @@ export default function WorkPage() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href="/#contact"
-                className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition"
+                className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
               >
                 Request a quote
               </Link>
@@ -144,7 +144,7 @@ export default function WorkPage() {
               <div className="mt-auto pt-6">
                 <a
                   href="#"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
                 >
                   Live / Repo
                 </a>
@@ -253,7 +253,7 @@ export default function WorkPage() {
             <div className="md:col-span-4 md:flex md:justify-end">
               <Link
                 href="/#contact"
-                className="inline-flex w-full md:w-auto items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition"
+                className="inline-flex w-full md:w-auto items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
               >
                 Request a quote
               </Link>

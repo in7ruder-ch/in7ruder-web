@@ -141,7 +141,7 @@ export default function Contact() {
                     <button
                         type="submit"
                         disabled={status === "loading"}
-                        className="mt-4 inline-flex items-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition disabled:opacity-60"
+                        className="mt-4 inline-flex items-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition disabled:opacity-60"
                     >
                         {status === "loading" ? "Sending..." : config.submitLabel}
                     </button>

@@ -1,16 +1,32 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 export default function Resources() {
-  const [resources, setResources] = useState([]);
-
-  useEffect(() => {
-    fetch("/data/resources.json")
-      .then((res) => res.json())
-      .then(setResources)
-      .catch(() => setResources([]));
-  }, []);
+  const resources = [
+    {
+      id: "owasp-dev-guide",
+      title: "OWASP Developer Guide",
+      description:
+        "Secure coding principles and best practices for building resilient applications.",
+      href: "/resources/OWASP_Developer_Guide.pdf",
+      cta: "Download",
+    },
+    {
+      id: "owasp-testing-guide",
+      title: "OWASP Testing Guide",
+      description:
+        "Comprehensive methodology for testing web applications and identifying real risk.",
+      href: "/resources/OWASP_Testing_Guide.pdf",
+      cta: "Download",
+    },
+    {
+      id: "owasp-wasg",
+      title: "OWASP Web Application Security Guide",
+      description:
+        "Foundational concepts and controls for securing modern web applications.",
+      href: "/resources/OWASP_Web_Application_Security.pdf",
+      cta: "Download",
+    },
+  ];
 
   return (
     <section id="resources" className="py-16 border-t border-white/10">
@@ -32,7 +48,7 @@ export default function Resources() {
               className="rounded-2xl border border-white/10 bg-white/5 p-6 flex items-center justify-between gap-4"
             >
               <div>
-                <p className="text-sm font-semibold">{r.title}</p>
+                <p className="text-sm font-semibold text-white">{r.title}</p>
                 <p className="mt-1 text-sm text-zinc-400">
                   {r.description}
                 </p>
@@ -40,6 +56,8 @@ export default function Resources() {
 
               <a
                 href={r.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="shrink-0 inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-zinc-200 transition"
               >
                 {r.cta}

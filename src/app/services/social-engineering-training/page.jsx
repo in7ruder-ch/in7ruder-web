@@ -79,16 +79,19 @@ export default function SocialEngineeringTrainingPage() {
         <div className="max-w-3xl space-y-6">
           <p className="text-zinc-300">
             Most successful attacks do not rely on technical exploits alone.
-            They exploit trust, urgency, authority, and habit.
+            They exploit human behavior: trust, urgency, authority, and routine.
+            These attacks are subtle, scalable, and often invisible until damage is done.
           </p>
 
           <p className="text-zinc-300">
-            Social Engineering Training helps teams recognize these patterns,
-            slow down automatic reactions, and respond with clarity instead of
-            fear.
+            Social Engineering Training helps teams recognize manipulation patterns,
+            slow down automatic reactions, and make deliberate decisions under pressure.
+            The goal is not paranoia, but awareness: replacing fear and impulse with
+            clarity, confidence, and consistent response.
           </p>
         </div>
       </section>
+
 
       {/* APPROACH */}
       <section

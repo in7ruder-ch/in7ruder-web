@@ -116,7 +116,7 @@ export default function Navbar() {
           </div>
 
           <Link href="/work" className="hover:text-white transition" onClick={closeAll}>
-            Work
+            Whoami
           </Link>
 
           <Link href="/#resources" className="hover:text-white transition" onClick={closeAll}>
@@ -190,7 +190,7 @@ export default function Navbar() {
                 className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
                 onClick={closeAll}
               >
-                Work
+                Whoami
               </Link>
               <Link
                 href="/#resources"

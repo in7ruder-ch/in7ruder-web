@@ -7,7 +7,7 @@ export default function WorkPage() {
       <section className="py-16 md:py-24">
         <div className="grid gap-10 md:grid-cols-12 items-center">
           <div className="md:col-span-7 space-y-6">
-            <p className="text-sm text-zinc-400">Work</p>
+            <p className="text-sm text-zinc-400">Whoami</p>
 
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
               Proof over promises.
@@ -64,7 +64,7 @@ export default function WorkPage() {
                     Email:{" "}
                     <a
                       href="mailto:matias@in7ruder.com"
-                      className="underline hover:text-brand transition"
+                      className="no-underline hover:underline hover:text-brand transition"
                     >
                       matias@in7ruder.com
                     </a>
@@ -79,9 +79,9 @@ export default function WorkPage() {
                       href="https://www.linkedin.com/in/mvanarelli/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="underline hover:text-brand transition"
+                      className="no-underline hover:underline hover:text-brand transition"
                     >
-                      /in/mvanarelli
+                     mvanarelli
                     </a>
                   </span>
                 </li>
@@ -175,30 +175,64 @@ export default function WorkPage() {
                   href="https://www.linkedin.com/in/mvanarelli/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline hover:text-brand transition"
+                  className="block no-underline hover:underline hover:text-brand transition"
                 >
                   LinkedIn
                 </a>
                 <a
-                  href="https://in7ruder.com"
+                  href="https://app.hackthebox.com/users/1704649"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="underline hover:text-brand transition"
+                  className="block no-underline hover:underline hover:text-brand transition"
                 >
-                  Website
+                  Hackthebox
                 </a>
               </div>
+
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
               <p className="text-sm font-semibold text-white">Certifications</p>
+
               <div className="mt-4 space-y-2 text-sm text-zinc-300">
-                <p>CPTS (HTB)</p>
-                <p>CEH</p>
-                <p>SOC Analyst L1 (TCM Security)</p>
-                <p>OSCP (in progress)</p>
+                <a
+                  href="https://www.credly.com/badges/620b2b80-8d21-4e52-95d1-392866039eb3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block no-underline hover:underline hover:text-brand transition"
+                >
+                  Hack The Box Certified Penetration Testing Specialist (HTB CPTS)
+                </a>
+
+                <a
+                  href="https://www.credential.net/c64c6668-744c-4856-b3ba-e5b681088033#acc.rKoNBnX3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block no-underline hover:underline hover:text-brand transition"
+                >
+                  Certified Ethical Hacker (CEH)
+                </a>
+
+                <a
+                  href="https://www.hacksmarter.org/completion/4960dabf02d49841"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block no-underline hover:underline hover:text-brand transition"
+                >
+                  Sliver C2: Pentesting and Evasion
+                </a>
+
+                <a
+                  href="https://www.hacksmarter.org/completion/ca429adba82556f8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block no-underline hover:underline hover:text-brand transition"
+                >
+                  Hands on Phishing
+                </a>
               </div>
             </div>
+
           </div>
         </div>
       </section>

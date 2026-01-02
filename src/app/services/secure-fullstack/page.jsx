@@ -78,16 +78,21 @@ export default function SecureFullstackPage() {
                 <div className="max-w-3xl space-y-6">
                     <p className="text-zinc-300">
                         Many security issues are introduced during development, not after
-                        deployment. Fixing them later is expensive and often incomplete.
+                        deployment. Small design decisions, missing controls, or insecure defaults
+                        often become systemic risks once an application is in production.
+                        Fixing them later is expensive, disruptive, and rarely complete.
                     </p>
 
                     <p className="text-zinc-300">
-                        Secure Full-Stack focuses on identifying weak points in your
-                        application architecture and development practices, then improving
-                        them in a way your team can realistically maintain.
+                        Secure Full-Stack focuses on identifying weak points across your
+                        application architecture, data flows, and development practices.
+                        The goal is to improve security in a pragmatic way your team can
+                        realistically maintain, without slowing down delivery or adding
+                        unnecessary complexity.
                     </p>
                 </div>
             </section>
+
 
             {/* APPROACH */}
             <section
@@ -112,16 +117,16 @@ export default function SecureFullstackPage() {
                                 OWASP guidelines
                             </h3>
                             <p className="mt-2 text-sm text-zinc-300">
-                                Alignment with OWASP Top 10 and related best practices to address
+                                Alignment with OWASP DevSecOps Guideline and related best practices to address
                                 common and critical application risks.
                             </p>
                             <a
-                                href="/resources/owasp-top-10.pdf"
+                                href="/resources/OWASP_Developer_Guide.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="mt-4 inline-flex text-sm text-white/80 underline hover:text-white transition"
                             >
-                                Download OWASP Top 10 (PDF)
+                                Download OWASP Developer Guide (PDF)
                             </a>
                         </div>
 

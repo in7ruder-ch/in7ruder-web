@@ -1,0 +1,41 @@
+[
+  {
+    "id": "secure-fullstack",
+    "title": "Secure Full-Stack Development",
+    "subtitle": "OWASP-aligned delivery for modern web apps",
+    "bullets": [
+      "Build MVPs and production features with secure defaults",
+      "OWASP AppSec checklist + evidence of controls applied",
+      "Hardening sprint for existing apps (quick wins + backlog)"
+    ],
+    "cta": "See packages",
+    "href": "/services/secure-fullstack?service=Secure%20Full-Stack%20Development",
+    "serviceValue": "Secure Full-Stack Development"
+  },
+  {
+    "id": "social-engineering-training",
+    "title": "Corporate Social Engineering Training",
+    "subtitle": "Awareness that actually changes behavior",
+    "bullets": [
+      "Practical training tailored to teams and roles",
+      "Optional phishing simulations with measurable outcomes",
+      "Executive-ready summary + remediation guidance"
+    ],
+    "cta": "Request a corporate plan",
+    "href": "/services/social-engineering-training?service=Corporate%20Social%20Engineering%20Training",
+    "serviceValue": "Corporate Social Engineering Training"
+  },
+  {
+    "id": "pentesting",
+    "title": "Pentesting",
+    "subtitle": "External • Internal • Webapp — actionable remediation",
+    "bullets": [
+      "Clear scope, reproducible findings, risk prioritization",
+      "Technical report + executive summary",
+      "Optional retest to validate fixes"
+    ],
+    "cta": "Get a quote",
+    "href": "/services/pentesting?service=Pentesting",
+    "serviceValue": "Pentesting"
+  }
+]

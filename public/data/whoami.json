@@ -1,0 +1,6 @@
+{
+  "intro": "I’m a security-driven full-stack developer and penetration tester. I design, break, and harden web applications with the same mindset: assume nothing, validate everything.",
+  "mindset": "I don’t separate development from security. If an app ships fast but ships vulnerabilities, it’s unfinished. I focus on secure defaults, clear threat models, and decisions grounded in real risk and impact, aligned with OWASP AppSec guidance.",
+  "background": "My background combines full-stack engineering with offensive security, shaped by years of analytical work where prioritization and risk assessment mattered. I’ve worked across modern web stacks, assessed real-world attack surfaces, and delivered reports and fixes that teams can actually implement.",
+  "focus": "Today, I help teams build secure web applications, strengthen organizations against social engineering, and validate risk through external, internal, and web application pentesting."
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "owasp-appsec-checklist",
+    "title": "OWASP AppSec Checklist for Web Applications",
+    "description": "A practical checklist to validate secure defaults, common AppSec controls, and deployment readiness for modern web apps.",
+    "type": "lead-magnet",
+    "cta": "Download checklist",
+    "format": "PDF",
+    "href": "/resources/owasp-appsec-checklist"
+  }
+]

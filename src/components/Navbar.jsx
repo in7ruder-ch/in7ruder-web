@@ -209,7 +209,7 @@ export default function Navbar() {
 
               <Link
                 href="/#contact"
-                className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
+                className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:text-white! transition"
                 onClick={closeAll}
               >
                 Request a quote

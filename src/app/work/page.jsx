@@ -1,8 +1,102 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "Work",
+  description:
+    "Proof over promises. Projects, credentials, and results—real work across web apps, security improvements, and technical delivery.",
+
+  alternates: {
+    canonical: "https://in7ruder.com/work",
+  },
+
+  openGraph: {
+    type: "website",
+    url: "https://in7ruder.com/work",
+    title: "in7ruder | Work",
+    description:
+      "Proof over promises. Projects, credentials, and results—real work across web apps, security improvements, and technical delivery.",
+    siteName: "in7ruder",
+    images: [
+      {
+        url: "/img/logo-in7ruder.png",
+        width: 1200,
+        height: 630,
+        alt: "in7ruder – Work",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "in7ruder | Work",
+    description:
+      "Projects, credentials, and results—real work across web apps and security improvements.",
+    images: ["/img/logo-in7ruder.png"],
+  },
+};
+
 export default function WorkPage() {
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://in7ruder.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Work",
+          item: "https://in7ruder.com/work",
+        },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      name: "Work | in7ruder",
+      url: "https://in7ruder.com/work",
+      about: {
+        "@type": "Person",
+        name: "Matias Vanarelli",
+        url: "https://in7ruder.com/work",
+        email: "matias@in7ruder.com",
+        homeLocation: {
+          "@type": "Place",
+          name: "Düdingen, Switzerland",
+        },
+        sameAs: [
+          "https://www.linkedin.com/in/mvanarelli/",
+          "https://app.hackthebox.com/users/1704649",
+        ],
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: "Matias Vanarelli",
+      url: "https://in7ruder.com/work",
+      email: "matias@in7ruder.com",
+      jobTitle: "Application Security / Pentesting",
+      sameAs: [
+        "https://www.linkedin.com/in/mvanarelli/",
+        "https://app.hackthebox.com/users/1704649",
+      ],
+    },
+  ];
+
   return (
     <main className="pt-14">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* HERO */}
       <section className="py-16 md:py-24">
         <div className="grid gap-10 md:grid-cols-12 items-center">
@@ -104,8 +198,8 @@ export default function WorkPage() {
             Projects with an AppSec mindset
           </h2>
           <p className="text-zinc-300 max-w-2xl">
-            Real-world websites. Each example shows the stack, the security focus,
-            and the outcome you can verify live.
+            Real-world websites. Each example shows the stack, the security
+            focus, and the outcome you can verify live.
           </p>
         </div>
 
@@ -267,7 +361,9 @@ export default function WorkPage() {
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
               Verified profiles and certifications
             </h2>
-            <p className="text-zinc-300">Links you can click. No vague claims.</p>
+            <p className="text-zinc-300">
+              Links you can click. No vague claims.
+            </p>
           </div>
 
           <div className="md:col-span-7 grid gap-5 md:grid-cols-2">
@@ -302,7 +398,8 @@ export default function WorkPage() {
                   rel="noopener noreferrer"
                   className="block no-underline hover:text-brand transition"
                 >
-                  Hack The Box Certified Penetration Testing Specialist (HTB CPTS)
+                  Hack The Box Certified Penetration Testing Specialist (HTB
+                  CPTS)
                 </a>
 
                 <a

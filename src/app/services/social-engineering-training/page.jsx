@@ -1,15 +1,108 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "Corporate Social Engineering Training",
+  description:
+    "Practical training on how real social engineering attacks work—phishing, pretexting, impersonation, and decision-making under pressure. Build awareness without fear.",
+
+  alternates: {
+    canonical: "https://in7ruder.com/services/social-engineering-training",
+  },
+
+  openGraph: {
+    type: "website",
+    url: "https://in7ruder.com/services/social-engineering-training",
+    title: "in7ruder | Social Engineering Training",
+    description:
+      "Practical training on how real social engineering attacks work—phishing, pretexting, impersonation, and decision-making under pressure. Build awareness without fear.",
+    siteName: "in7ruder",
+    images: [
+      {
+        url: "/img/logo-in7ruder.png",
+        width: 1200,
+        height: 630,
+        alt: "in7ruder – Social Engineering Training",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "in7ruder | Social Engineering Training",
+    description:
+      "Practical training on phishing, pretexting, impersonation, and decision-making under pressure—build awareness without fear.",
+    images: ["/img/logo-in7ruder.png"],
+  },
+};
+
 export default function SocialEngineeringTrainingPage() {
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://in7ruder.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Services",
+          item: "https://in7ruder.com/#services",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Corporate Social Engineering Training",
+          item: "https://in7ruder.com/services/social-engineering-training",
+        },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: "Corporate Social Engineering Training",
+      description:
+        "Practical training on how real social engineering attacks work—phishing, pretexting, impersonation, and decision-making under pressure. Build awareness without fear.",
+      provider: {
+        "@type": "Organization",
+        name: "in7ruder",
+        url: "https://in7ruder.com",
+      },
+      url: "https://in7ruder.com/services/social-engineering-training",
+      areaServed: [
+        { "@type": "Country", name: "Switzerland" },
+        { "@type": "Country", name: "Germany" },
+        { "@type": "Country", name: "Austria" },
+        { "@type": "Country", name: "France" },
+        { "@type": "Country", name: "Italy" },
+      ],
+      serviceType: [
+        "Corporate Social Engineering Training",
+        "Phishing Awareness Training",
+        "Security Awareness Workshops",
+        "Impersonation and Pretexting Scenarios",
+      ],
+      category: "Cybersecurity",
+    },
+  ];
+
   return (
     <main className="pt-14">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* HERO */}
       <section className="py-16 md:py-24">
         <div className="grid gap-10 md:grid-cols-12 items-center">
           <div className="md:col-span-7 space-y-6">
-            <p className="text-sm text-zinc-400">
-              Social Engineering Training
-            </p>
+            <p className="text-sm text-zinc-400">Social Engineering Training</p>
 
             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
               Reduce human risk
@@ -41,9 +134,7 @@ export default function SocialEngineeringTrainingPage() {
 
           <div className="md:col-span-5 self-center">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-              <p className="text-sm font-semibold text-white">
-                Best suited for
-              </p>
+              <p className="text-sm font-semibold text-white">Best suited for</p>
 
               <ul className="mt-4 space-y-3 text-sm text-zinc-300">
                 <li className="flex gap-3">
@@ -80,18 +171,19 @@ export default function SocialEngineeringTrainingPage() {
           <p className="text-zinc-300">
             Most successful attacks do not rely on technical exploits alone.
             They exploit human behavior: trust, urgency, authority, and routine.
-            These attacks are subtle, scalable, and often invisible until damage is done.
+            These attacks are subtle, scalable, and often invisible until damage
+            is done.
           </p>
 
           <p className="text-zinc-300">
-            Social Engineering Training helps teams recognize manipulation patterns,
-            slow down automatic reactions, and make deliberate decisions under pressure.
-            The goal is not paranoia, but awareness: replacing fear and impulse with
-            clarity, confidence, and consistent response.
+            Social Engineering Training helps teams recognize manipulation
+            patterns, slow down automatic reactions, and make deliberate
+            decisions under pressure. The goal is not paranoia, but awareness:
+            replacing fear and impulse with clarity, confidence, and consistent
+            response.
           </p>
         </div>
       </section>
-
 
       {/* APPROACH */}
       <section

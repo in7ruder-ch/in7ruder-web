@@ -1,244 +1,336 @@
 import Link from "next/link";
 
+export const metadata = {
+  title: "Secure Full-Stack Development",
+  description:
+    "Practical application security across frontend, backend, and infrastructure—OWASP-aligned guidance that reduces real risk without slowing delivery.",
+
+  alternates: {
+    canonical: "https://in7ruder.com/services/secure-fullstack",
+  },
+
+  openGraph: {
+    type: "website",
+    url: "https://in7ruder.com/services/secure-fullstack",
+    title: "in7ruder | Secure Full-Stack Development",
+    description:
+      "Practical application security across frontend, backend, and infrastructure—OWASP-aligned guidance that reduces real risk without slowing delivery.",
+    siteName: "in7ruder",
+    images: [
+      {
+        url: "/img/logo-in7ruder.png",
+        width: 1200,
+        height: 630,
+        alt: "in7ruder – Secure Full-Stack Development",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "in7ruder | Secure Full-Stack Development",
+    description:
+      "OWASP-aligned AppSec across frontend, backend and infrastructure—reduce real risk without slowing delivery.",
+    images: ["/img/logo-in7ruder.png"],
+  },
+};
+
 export default function SecureFullstackPage() {
-    return (
-        <main className="pt-14">
-            {/* HERO */}
-            <section className="py-16 md:py-24">
-                <div className="grid gap-10 md:grid-cols-12 items-center">
-                    <div className="md:col-span-7 space-y-6">
-                        <p className="text-sm text-zinc-400">Secure Full-Stack</p>
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: "https://in7ruder.com/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Services",
+          item: "https://in7ruder.com/#services",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Secure Full-Stack Development",
+          item: "https://in7ruder.com/services/secure-fullstack",
+        },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: "Secure Full-Stack Development",
+      description:
+        "Practical application security across frontend, backend, and infrastructure—OWASP-aligned guidance that reduces real risk without slowing delivery.",
+      provider: {
+        "@type": "Organization",
+        name: "in7ruder",
+        url: "https://in7ruder.com",
+      },
+      url: "https://in7ruder.com/services/secure-fullstack",
+      areaServed: [
+        { "@type": "Country", name: "Switzerland" },
+        { "@type": "Country", name: "Germany" },
+        { "@type": "Country", name: "Austria" },
+        { "@type": "Country", name: "France" },
+        { "@type": "Country", name: "Italy" },
+      ],
+      serviceType: [
+        "Application Security Consulting",
+        "Secure Full-Stack Development",
+        "OWASP-aligned Secure Coding Guidance",
+        "Architecture Review",
+      ],
+      category: "Cybersecurity",
+    },
+  ];
 
-                        <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
-                            Build security into your stack,
-                            <br />
-                            not around it
-                        </h1>
+  return (
+    <main className="pt-14">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-                        <p className="text-lg text-zinc-300 max-w-xl">
-                            Practical application security across frontend, backend, and
-                            infrastructure. Designed to reduce real risk, not slow teams
-                            down.
-                        </p>
+      {/* HERO */}
+      <section className="py-16 md:py-24">
+        <div className="grid gap-10 md:grid-cols-12 items-center">
+          <div className="md:col-span-7 space-y-6">
+            <p className="text-sm text-zinc-400">Secure Full-Stack</p>
 
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <Link
-                                href="/?service=Secure%20Fullstack#contact"
-                                className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:text-white! transition"
-                            >
-                                Discuss your setup
-                            </Link>
+            <h1 className="text-4xl md:text-6xl font-semibold tracking-tight leading-[1.05]">
+              Build security into your stack,
+              <br />
+              not around it
+            </h1>
 
-                            <a
-                                href="#approach"
-                                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10 transition"
-                            >
-                                Security approach
-                            </a>
-                        </div>
-                    </div>
+            <p className="text-lg text-zinc-300 max-w-xl">
+              Practical application security across frontend, backend, and
+              infrastructure. Designed to reduce real risk, not slow teams down.
+            </p>
 
-                    <div className="md:col-span-5 self-center">
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <p className="text-sm font-semibold text-white">
-                                Best suited for
-                            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/?service=Secure%20Fullstack#contact"
+                className="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:text-white! transition"
+              >
+                Discuss your setup
+              </Link>
 
-                            <ul className="mt-4 space-y-3 text-sm text-zinc-300">
-                                <li className="flex gap-3">
-                                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/70" />
-                                    Product teams building web apps or APIs
-                                </li>
-                                <li className="flex gap-3">
-                                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/70" />
-                                    Startups scaling fast without security debt
-                                </li>
-                                <li className="flex gap-3">
-                                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/70" />
-                                    Teams preparing for audits or external testing
-                                </li>
-                            </ul>
+              <a
+                href="#approach"
+                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10 transition"
+              >
+                Security approach
+              </a>
+            </div>
+          </div>
 
-                            <div className="mt-6 rounded-xl border border-white/10 bg-zinc-950/40 p-4">
-                                <p className="text-xs text-zinc-400">Focus areas</p>
-                                <div className="mt-2 text-sm text-white space-y-1">
-                                    <p>Frontend and API security</p>
-                                    <p>Authentication and authorization</p>
-                                    <p>Secure data handling</p>
-                                    <p>OWASP-aligned best practices</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <div className="md:col-span-5 self-center">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <p className="text-sm font-semibold text-white">Best suited for</p>
+
+              <ul className="mt-4 space-y-3 text-sm text-zinc-300">
+                <li className="flex gap-3">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/70" />
+                  Product teams building web apps or APIs
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/70" />
+                  Startups scaling fast without security debt
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-white/70" />
+                  Teams preparing for audits or external testing
+                </li>
+              </ul>
+
+              <div className="mt-6 rounded-xl border border-white/10 bg-zinc-950/40 p-4">
+                <p className="text-xs text-zinc-400">Focus areas</p>
+                <div className="mt-2 text-sm text-white space-y-1">
+                  <p>Frontend and API security</p>
+                  <p>Authentication and authorization</p>
+                  <p>Secure data handling</p>
+                  <p>OWASP-aligned best practices</p>
                 </div>
-            </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {/* INTRO */}
-            <section className="py-16 border-t border-white/10">
-                <div className="max-w-3xl space-y-6">
-                    <p className="text-zinc-300">
-                        Many security issues are introduced during development, not after
-                        deployment. Small design decisions, missing controls, or insecure defaults
-                        often become systemic risks once an application is in production.
-                        Fixing them later is expensive, disruptive, and rarely complete.
-                    </p>
+      {/* INTRO */}
+      <section className="py-16 border-t border-white/10">
+        <div className="max-w-3xl space-y-6">
+          <p className="text-zinc-300">
+            Many security issues are introduced during development, not after
+            deployment. Small design decisions, missing controls, or insecure
+            defaults often become systemic risks once an application is in
+            production. Fixing them later is expensive, disruptive, and rarely
+            complete.
+          </p>
 
-                    <p className="text-zinc-300">
-                        Secure Full-Stack focuses on identifying weak points across your
-                        application architecture, data flows, and development practices.
-                        The goal is to improve security in a pragmatic way your team can
-                        realistically maintain, without slowing down delivery or adding
-                        unnecessary complexity.
-                    </p>
-                </div>
-            </section>
+          <p className="text-zinc-300">
+            Secure Full-Stack focuses on identifying weak points across your
+            application architecture, data flows, and development practices. The
+            goal is to improve security in a pragmatic way your team can
+            realistically maintain, without slowing down delivery or adding
+            unnecessary complexity.
+          </p>
+        </div>
+      </section>
 
+      {/* APPROACH */}
+      <section
+        id="approach"
+        className="py-16 border-t border-white/10 bg-zinc-950/40"
+      >
+        <div className="grid gap-12 md:grid-cols-12 items-start">
+          <div className="md:col-span-5 space-y-3">
+            <p className="text-sm text-zinc-400">Approach</p>
+            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+              Grounded in real-world standards
+            </h2>
+            <p className="text-zinc-300">
+              Security guidance is based on established frameworks and adapted
+              to your actual stack and risk profile.
+            </p>
+          </div>
 
-            {/* APPROACH */}
-            <section
-                id="approach"
-                className="py-16 border-t border-white/10 bg-zinc-950/40"
-            >
-                <div className="grid gap-12 md:grid-cols-12 items-start">
-                    <div className="md:col-span-5 space-y-3">
-                        <p className="text-sm text-zinc-400">Approach</p>
-                        <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-                            Grounded in real-world standards
-                        </h2>
-                        <p className="text-zinc-300">
-                            Security guidance is based on established frameworks and adapted
-                            to your actual stack and risk profile.
-                        </p>
-                    </div>
+          <div className="md:col-span-7 grid gap-5 md:grid-cols-2">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="text-xl font-semibold tracking-tight">
+                OWASP guidelines
+              </h3>
+              <p className="mt-2 text-sm text-zinc-300">
+                Alignment with OWASP DevSecOps Guideline and related best
+                practices to address common and critical application risks.
+              </p>
+              <a
+                href="/resources/OWASP_Developer_Guide.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex text-sm text-white/80 underline hover:text-white transition"
+              >
+                Download OWASP Developer Guide (PDF)
+              </a>
+            </div>
 
-                    <div className="md:col-span-7 grid gap-5 md:grid-cols-2">
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <h3 className="text-xl font-semibold tracking-tight">
-                                OWASP guidelines
-                            </h3>
-                            <p className="mt-2 text-sm text-zinc-300">
-                                Alignment with OWASP DevSecOps Guideline and related best practices to address
-                                common and critical application risks.
-                            </p>
-                            <a
-                                href="/resources/OWASP_Developer_Guide.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="mt-4 inline-flex text-sm text-white/80 underline hover:text-white transition"
-                            >
-                                Download OWASP Developer Guide (PDF)
-                            </a>
-                        </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="text-xl font-semibold tracking-tight">
+                Context-aware security
+              </h3>
+              <p className="mt-2 text-sm text-zinc-300">
+                Recommendations are tailored to your architecture, not applied
+                blindly from a checklist.
+              </p>
+            </div>
 
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <h3 className="text-xl font-semibold tracking-tight">
-                                Context-aware security
-                            </h3>
-                            <p className="mt-2 text-sm text-zinc-300">
-                                Recommendations are tailored to your architecture, not applied
-                                blindly from a checklist.
-                            </p>
-                        </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="text-xl font-semibold tracking-tight">
+                Developer-friendly
+              </h3>
+              <p className="mt-2 text-sm text-zinc-300">
+                Clear explanations and practical examples your team can
+                implement without friction.
+              </p>
+            </div>
 
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <h3 className="text-xl font-semibold tracking-tight">
-                                Developer-friendly
-                            </h3>
-                            <p className="mt-2 text-sm text-zinc-300">
-                                Clear explanations and practical examples your team can
-                                implement without friction.
-                            </p>
-                        </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <h3 className="text-xl font-semibold tracking-tight">
+                Long-term risk reduction
+              </h3>
+              <p className="mt-2 text-sm text-zinc-300">
+                Focus on patterns and practices that reduce future
+                vulnerabilities, not just current issues.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                        <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                            <h3 className="text-xl font-semibold tracking-tight">
-                                Long-term risk reduction
-                            </h3>
-                            <p className="mt-2 text-sm text-zinc-300">
-                                Focus on patterns and practices that reduce future
-                                vulnerabilities, not just current issues.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+      {/* WHAT YOU GET */}
+      <section className="py-16 border-t border-white/10">
+        <div className="space-y-3">
+          <p className="text-sm text-zinc-400">What you get</p>
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+            Clear guidance your team can act on
+          </h2>
+        </div>
 
-            {/* WHAT YOU GET */}
-            <section className="py-16 border-t border-white/10">
-                <div className="space-y-3">
-                    <p className="text-sm text-zinc-400">What you get</p>
-                    <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-                        Clear guidance your team can act on
-                    </h2>
-                </div>
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold tracking-tight">
+              Architecture review
+            </h3>
+            <p className="mt-2 text-sm text-zinc-300">
+              Identification of risky design decisions across frontend, backend,
+              and integrations.
+            </p>
+          </div>
 
-                <div className="mt-10 grid gap-5 md:grid-cols-2">
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                        <h3 className="text-xl font-semibold tracking-tight">
-                            Architecture review
-                        </h3>
-                        <p className="mt-2 text-sm text-zinc-300">
-                            Identification of risky design decisions across frontend,
-                            backend, and integrations.
-                        </p>
-                    </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold tracking-tight">
+              Secure coding guidance
+            </h3>
+            <p className="mt-2 text-sm text-zinc-300">
+              Practical recommendations aligned with OWASP guidance and modern
+              development practices.
+            </p>
+          </div>
 
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                        <h3 className="text-xl font-semibold tracking-tight">
-                            Secure coding guidance
-                        </h3>
-                        <p className="mt-2 text-sm text-zinc-300">
-                            Practical recommendations aligned with OWASP guidance and modern
-                            development practices.
-                        </p>
-                    </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold tracking-tight">
+              Risk prioritization
+            </h3>
+            <p className="mt-2 text-sm text-zinc-300">
+              Issues ranked by likelihood and impact, not theoretical severity.
+            </p>
+          </div>
 
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                        <h3 className="text-xl font-semibold tracking-tight">
-                            Risk prioritization
-                        </h3>
-                        <p className="mt-2 text-sm text-zinc-300">
-                            Issues ranked by likelihood and impact, not theoretical severity.
-                        </p>
-                    </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 className="text-xl font-semibold tracking-tight">
+              Actionable roadmap
+            </h3>
+            <p className="mt-2 text-sm text-zinc-300">
+              A clear path to improve security incrementally without blocking
+              delivery.
+            </p>
+          </div>
+        </div>
+      </section>
 
-                    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                        <h3 className="text-xl font-semibold tracking-tight">
-                            Actionable roadmap
-                        </h3>
-                        <p className="mt-2 text-sm text-zinc-300">
-                            A clear path to improve security incrementally without blocking
-                            delivery.
-                        </p>
-                    </div>
-                </div>
-            </section>
+      {/* FINAL CTA */}
+      <section className="py-16 border-t border-white/10">
+        <div className="rounded-2xl border border-white/10 bg-zinc-950/40 p-8 md:p-10">
+          <div className="grid gap-6 md:grid-cols-12 items-center">
+            <div className="md:col-span-8 space-y-2">
+              <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
+                Improve security without slowing your team
+              </h2>
+              <p className="text-zinc-300">
+                Let’s review your stack and identify the changes that will
+                actually reduce risk.
+              </p>
+            </div>
 
-            {/* FINAL CTA */}
-            <section className="py-16 border-t border-white/10">
-                <div className="rounded-2xl border border-white/10 bg-zinc-950/40 p-8 md:p-10">
-                    <div className="grid gap-6 md:grid-cols-12 items-center">
-                        <div className="md:col-span-8 space-y-2">
-                            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-                                Improve security without slowing your team
-                            </h2>
-                            <p className="text-zinc-300">
-                                Let’s review your stack and identify the changes that will
-                                actually reduce risk.
-                            </p>
-                        </div>
-
-                        <div className="md:col-span-4 md:flex md:justify-end">
-                            <Link
-                                href="/?service=Secure%20Fullstack#contact"
-                                className="inline-flex w-full md:w-auto items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:text-white! transition"
-                            >
-                                Start the conversation
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    );
+            <div className="md:col-span-4 md:flex md:justify-end">
+              <Link
+                href="/?service=Secure%20Fullstack#contact"
+                className="inline-flex w-full md:w-auto items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:text-white! transition"
+              >
+                Start the conversation
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }

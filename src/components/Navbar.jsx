@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
+
   const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const closeTimer = useRef(null);
@@ -38,6 +41,17 @@ export default function Navbar() {
       if (closeTimer.current) clearTimeout(closeTimer.current);
     };
   }, []);
+
+  // From /services/<slug> -> ?service=<slug>#contact
+  const requestQuoteHref = useMemo(() => {
+    if (!pathname) return "/#contact";
+
+    const match = pathname.match(/^\/services\/([^/]+)$/);
+    if (!match) return "/#contact";
+
+    const slug = match[1]; // e.g. pentesting | secure-fullstack | social-engineering-training
+    return `/?service=${encodeURIComponent(slug)}#contact`;
+  }, [pathname]);
 
   return (
     <header className="relative z-50 border-b border-white/10">
@@ -73,7 +87,6 @@ export default function Navbar() {
               <span className="text-white/40">▾</span>
             </button>
 
-            {/* Hover bridge: keeps cursor “connected” to the dropdown */}
             <div
               className={`absolute left-0 top-full h-3 w-72 ${
                 servicesOpen ? "block" : "hidden"
@@ -81,7 +94,6 @@ export default function Navbar() {
               aria-hidden="true"
             />
 
-            {/* Dropdown panel: no gap (mt-0) */}
             <div
               className={`absolute left-0 top-full mt-0 z-50 w-72 rounded-2xl border border-white/10 bg-zinc-950/95 backdrop-blur p-2 shadow-lg ${
                 servicesOpen ? "block" : "hidden"
@@ -131,14 +143,13 @@ export default function Navbar() {
         {/* Right side: desktop CTA + mobile burger */}
         <div className="flex items-center gap-3">
           <Link
-            href="/#contact"
-            className="hidden md:inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:text-white! hover:bg-(--color-brand) transition-colors"
+            href={requestQuoteHref}
+            className="hidden md:inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-[var(--color-brand)] hover:!text-white transition-colors"
             onClick={closeAll}
           >
             Request a quote
           </Link>
 
-          {/* Mobile hamburger */}
           <button
             type="button"
             className="md:hidden inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/90 hover:bg-white/10 transition"
@@ -151,7 +162,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile panel */}
       {mobileOpen && (
         <div className="md:hidden border-t border-white/10 bg-zinc-950/95 backdrop-blur">
           <div className="mx-auto max-w-6xl px-5 py-5 space-y-4">
@@ -208,8 +218,8 @@ export default function Navbar() {
               </Link>
 
               <Link
-                href="/#contact"
-                className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:text-white! transition"
+                href={requestQuoteHref}
+                className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-[var(--color-brand)] hover:!text-white transition-colors"
                 onClick={closeAll}
               >
                 Request a quote

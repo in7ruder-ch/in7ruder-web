@@ -46,16 +46,16 @@ export default function WorkPage() {
                 <li className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-white/70" />
                   <span>
-                    <span className="text-white/80 font-semibold">Matias Vanarelli</span>{" "}
+                    <span className="text-white/80 font-semibold">
+                      Matias Vanarelli
+                    </span>{" "}
                     - Düdingen, Switzerland
                   </span>
                 </li>
 
                 <li className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-white/70" />
-                  <span>
-                    CPTS | CEH | SOC Analyst L1 | Social Engineer
-                  </span>
+                  <span>CPTS | CEH | SOC Analyst L1 | Social Engineer</span>
                 </li>
 
                 <li className="flex gap-3">
@@ -64,7 +64,7 @@ export default function WorkPage() {
                     Email:{" "}
                     <a
                       href="mailto:matias@in7ruder.com"
-                      className="no-underline hover:underline hover:text-brand transition"
+                      className="no-underline hover:text-brand transition"
                     >
                       matias@in7ruder.com
                     </a>
@@ -79,13 +79,12 @@ export default function WorkPage() {
                       href="https://www.linkedin.com/in/mvanarelli/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="no-underline hover:underline hover:text-brand transition"
+                      className="no-underline hover:text-brand transition"
                     >
-                     mvanarelli
+                      mvanarelli
                     </a>
                   </span>
                 </li>
-
 
                 <li className="flex gap-3">
                   <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-white/70" />
@@ -102,55 +101,161 @@ export default function WorkPage() {
         <div className="space-y-3">
           <p className="text-sm text-zinc-400">Featured projects</p>
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
-            Real work, clearly explained
+            Projects with an AppSec mindset
           </h2>
           <p className="text-zinc-300 max-w-2xl">
-            Short, readable snapshots. What it was, what I did, and what changed.
+            Real-world websites. Each example shows the stack, the security focus,
+            and the outcome you can verify live.
           </p>
         </div>
 
         <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {/* Placeholder cards – we’ll replace with your real projects */}
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col"
-            >
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold tracking-tight">
-                  Project name
-                </h3>
-                <p className="text-sm text-zinc-300">
-                  One-liner: what this project is and who it’s for.
-                </p>
+          {/* Project 1 */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col">
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold tracking-tight">
+                Hermanos Corallo
+              </h3>
+
+              <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
+                <img
+                  src="/img/projects/hc.png"
+                  alt="Hermanos Corallo preview"
+                  className="w-full aspect-video object-cover"
+                />
               </div>
 
-              <div className="mt-5 space-y-3 text-sm text-zinc-300">
-                <p>
-                  <span className="text-white/80 font-semibold">Stack:</span>{" "}
-                  Next.js, Tailwind, …
-                </p>
-                <p>
-                  <span className="text-white/80 font-semibold">Focus:</span>{" "}
-                  Security hardening, performance, …
-                </p>
-                <p>
-                  <span className="text-white/80 font-semibold">Outcome:</span>{" "}
-                  Concrete improvements or result.
-                </p>
-              </div>
-
-              {/* Only one CTA now */}
-              <div className="mt-auto pt-6">
-                <a
-                  href="#"
-                  className="inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
-                >
-                  Live / Repo
-                </a>
-              </div>
+              <p className="text-sm text-zinc-300">
+                Multimedia portfolio website for documentary and humanitarian
+                storytelling.
+              </p>
             </div>
-          ))}
+
+            <div className="mt-5 space-y-3 text-sm text-zinc-300">
+              <p>
+                <span className="text-white/80 font-semibold">Stack:</span>{" "}
+                HTML, CSS, JavaScript
+              </p>
+              <p>
+                <span className="text-white/80 font-semibold">Focus:</span>{" "}
+                Front-end hardening, safe media embedding, performance and
+                reduced attack surface.
+              </p>
+              <p>
+                <span className="text-white/80 font-semibold">Outcome:</span>{" "}
+                Fast, content-first site with clean structure and minimal risk
+                exposure.
+              </p>
+            </div>
+
+            <div className="mt-auto pt-6">
+              <a
+                href="https://www.hermanoscorallo.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
+              >
+                Visit site
+              </a>
+            </div>
+          </div>
+
+          {/* Project 2 */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col">
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold tracking-tight">
+                Corinne Vanarelli
+              </h3>
+
+              <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
+                <img
+                  src="/img/projects/cv.png"
+                  alt="Corinne Vanarelli website preview"
+                  className="w-full aspect-video object-cover"
+                />
+              </div>
+
+              <p className="text-sm text-zinc-300">
+                Service-based website with events, blog, contact flows and
+                dynamic content.
+              </p>
+            </div>
+
+            <div className="mt-5 space-y-3 text-sm text-zinc-300">
+              <p>
+                <span className="text-white/80 font-semibold">Stack:</span>{" "}
+                Next.js, Supabase
+              </p>
+              <p>
+                <span className="text-white/80 font-semibold">Focus:</span>{" "}
+                Secure data handling, form abuse prevention and OWASP-aligned
+                patterns.
+              </p>
+              <p>
+                <span className="text-white/80 font-semibold">Outcome:</span>{" "}
+                Scalable platform with a secure-by-default foundation.
+              </p>
+            </div>
+
+            <div className="mt-auto pt-6">
+              <a
+                href="https://www.corinnevanarelli.ch/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
+              >
+                Visit site
+              </a>
+            </div>
+          </div>
+
+          {/* Project 3 */}
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col">
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold tracking-tight">
+                Ingredienza
+              </h3>
+
+              <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
+                <img
+                  src="/img/projects/ing.png"
+                  alt="Ingredienza store preview"
+                  className="w-full aspect-video object-cover"
+                />
+              </div>
+
+              <p className="text-sm text-zinc-300">
+                Fully custom Shopify store for a premium food brand.
+              </p>
+            </div>
+
+            <div className="mt-5 space-y-3 text-sm text-zinc-300">
+              <p>
+                <span className="text-white/80 font-semibold">Stack:</span>{" "}
+                Shopify (custom theme)
+              </p>
+              <p>
+                <span className="text-white/80 font-semibold">Focus:</span>{" "}
+                Storefront AppSec hygiene, safe third-party integrations and
+                privacy awareness.
+              </p>
+              <p>
+                <span className="text-white/80 font-semibold">Outcome:</span>{" "}
+                Production-ready e-commerce with reduced integration risk.
+              </p>
+            </div>
+
+            <div className="mt-auto pt-6">
+              <a
+                href="https://www.ingredienza.ch/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-(--color-brand) hover:!text-white transition"
+              >
+                Visit store
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -162,9 +267,7 @@ export default function WorkPage() {
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">
               Verified profiles and certifications
             </h2>
-            <p className="text-zinc-300">
-              Links you can click. No vague claims.
-            </p>
+            <p className="text-zinc-300">Links you can click. No vague claims.</p>
           </div>
 
           <div className="md:col-span-7 grid gap-5 md:grid-cols-2">
@@ -175,7 +278,7 @@ export default function WorkPage() {
                   href="https://www.linkedin.com/in/mvanarelli/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block no-underline hover:underline hover:text-brand transition"
+                  className="block no-underline hover:text-brand transition"
                 >
                   LinkedIn
                 </a>
@@ -183,23 +286,21 @@ export default function WorkPage() {
                   href="https://app.hackthebox.com/users/1704649"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block no-underline hover:underline hover:text-brand transition"
+                  className="block no-underline hover:text-brand transition"
                 >
                   Hackthebox
                 </a>
               </div>
-
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
               <p className="text-sm font-semibold text-white">Certifications</p>
-
               <div className="mt-4 space-y-2 text-sm text-zinc-300">
                 <a
                   href="https://www.credly.com/badges/620b2b80-8d21-4e52-95d1-392866039eb3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block no-underline hover:underline hover:text-brand transition"
+                  className="block no-underline hover:text-brand transition"
                 >
                   Hack The Box Certified Penetration Testing Specialist (HTB CPTS)
                 </a>
@@ -208,7 +309,7 @@ export default function WorkPage() {
                   href="https://www.credential.net/c64c6668-744c-4856-b3ba-e5b681088033#acc.rKoNBnX3"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block no-underline hover:underline hover:text-brand transition"
+                  className="block no-underline hover:text-brand transition"
                 >
                   Certified Ethical Hacker (CEH)
                 </a>
@@ -217,7 +318,7 @@ export default function WorkPage() {
                   href="https://www.hacksmarter.org/completion/4960dabf02d49841"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block no-underline hover:underline hover:text-brand transition"
+                  className="block no-underline hover:text-brand transition"
                 >
                   Sliver C2: Pentesting and Evasion
                 </a>
@@ -226,13 +327,12 @@ export default function WorkPage() {
                   href="https://www.hacksmarter.org/completion/ca429adba82556f8"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block no-underline hover:underline hover:text-brand transition"
+                  className="block no-underline hover:text-brand transition"
                 >
                   Hands on Phishing
                 </a>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -246,7 +346,8 @@ export default function WorkPage() {
                 Want to talk scope?
               </h2>
               <p className="text-zinc-300">
-                Share context and goals. I’ll propose the fastest path to reduce risk.
+                Share context and goals. I’ll propose the fastest path to reduce
+                risk.
               </p>
             </div>
 

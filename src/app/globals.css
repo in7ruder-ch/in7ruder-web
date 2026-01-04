@@ -26,6 +26,25 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* -----------------------------------------
+   GLOBAL: remove underline from ALL links
+   ----------------------------------------- */
+
+a,
+a:hover,
+a:focus,
+a:active,
+a:visited {
+  text-decoration: none !important;
+  text-underline-offset: unset;
+  text-decoration-thickness: unset;
+}
+
+/* In case any component uses outline focus styles */
+a:focus-visible {
+  outline: none;
+}
+
 /* -----------------------------
    Global brand hover behavior
    ----------------------------- */

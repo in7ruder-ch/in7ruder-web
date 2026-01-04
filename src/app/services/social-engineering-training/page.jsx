@@ -91,7 +91,7 @@ export default function SocialEngineeringTrainingPage() {
   ];
 
   return (
-    <main className="pt-14">
+    <main className="">
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger

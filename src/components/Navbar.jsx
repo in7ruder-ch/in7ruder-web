@@ -5,6 +5,41 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+function IconMenu({ className = "h-5 w-5" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <path d="M4 6h16" />
+      <path d="M4 12h16" />
+      <path d="M4 18h16" />
+    </svg>
+  );
+}
+
+function IconX({ className = "h-5 w-5" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
+      <path d="M6 6l12 12" />
+      <path d="M18 6l-12 12" />
+    </svg>
+  );
+}
+
 export default function Navbar() {
   const pathname = usePathname();
 
@@ -41,6 +76,22 @@ export default function Navbar() {
       if (closeTimer.current) clearTimeout(closeTimer.current);
     };
   }, []);
+
+  // Lock body scroll when mobile menu is open (prevents iOS layout weirdness)
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const prevOverflow = document.body.style.overflow;
+    const prevTouchAction = document.body.style.touchAction;
+
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.body.style.touchAction = prevTouchAction;
+    };
+  }, [mobileOpen]);
 
   // From /services/<slug> -> ?service=<slug>#contact
   const requestQuoteHref = useMemo(() => {
@@ -153,80 +204,92 @@ export default function Navbar() {
           <button
             type="button"
             className="md:hidden inline-flex items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/90 hover:bg-white/10 transition"
-            aria-label="Open menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen ? "true" : "false"}
             onClick={() => setMobileOpen((v) => !v)}
           >
-            ☰
+            {mobileOpen ? <IconX /> : <IconMenu />}
           </button>
         </div>
       </div>
 
+      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-white/10 bg-zinc-950/95 backdrop-blur">
-          <div className="mx-auto max-w-6xl px-5 py-5 space-y-4">
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-widest text-white/40">
-                Services
-              </p>
-              <div className="grid gap-1">
+        <>
+          {/* Overlay */}
+          <button
+            type="button"
+            aria-label="Close menu overlay"
+            onClick={closeAll}
+            className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+          />
+
+          {/* Panel */}
+          <div className="md:hidden fixed left-0 right-0 top-[73px] z-50 border-t border-white/10 bg-zinc-950/95 backdrop-blur">
+            <div className="mx-auto max-w-6xl px-5 py-5 space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs uppercase tracking-widest text-white/40">
+                  Services
+                </p>
+                <div className="grid gap-1">
+                  <Link
+                    href="/services/pentesting"
+                    className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
+                    onClick={closeAll}
+                  >
+                    Pentesting
+                  </Link>
+                  <Link
+                    href="/services/secure-fullstack"
+                    className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
+                    onClick={closeAll}
+                  >
+                    Secure Full-Stack
+                  </Link>
+                  <Link
+                    href="/services/social-engineering-training"
+                    className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
+                    onClick={closeAll}
+                  >
+                    Social Engineering Training
+                  </Link>
+                </div>
+              </div>
+
+              <div className="space-y-1 pt-2 border-t border-white/10">
                 <Link
-                  href="/services/pentesting"
-                  className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
+                  href="/work"
+                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
                   onClick={closeAll}
                 >
-                  Pentesting
+                  Whoami
                 </Link>
                 <Link
-                  href="/services/secure-fullstack"
-                  className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
+                  href="/#resources"
+                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
                   onClick={closeAll}
                 >
-                  Secure Full-Stack
+                  Resources
                 </Link>
                 <Link
-                  href="/services/social-engineering-training"
-                  className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
+                  href="/#contact"
+                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
                   onClick={closeAll}
                 >
-                  Social Engineering Training
+                  Contact
+                </Link>
+
+                <Link
+                  href={requestQuoteHref}
+                  className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-[var(--color-brand)] hover:!text-white transition-colors"
+                  onClick={closeAll}
+                >
+                  Request a quote
                 </Link>
               </div>
             </div>
-
-            <div className="space-y-1 pt-2 border-t border-white/10">
-              <Link
-                href="/work"
-                className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                onClick={closeAll}
-              >
-                Whoami
-              </Link>
-              <Link
-                href="/#resources"
-                className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                onClick={closeAll}
-              >
-                Resources
-              </Link>
-              <Link
-                href="/#contact"
-                className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                onClick={closeAll}
-              >
-                Contact
-              </Link>
-
-              <Link
-                href={requestQuoteHref}
-                className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-[var(--color-brand)] hover:!text-white transition-colors"
-                onClick={closeAll}
-              >
-                Request a quote
-              </Link>
-            </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );

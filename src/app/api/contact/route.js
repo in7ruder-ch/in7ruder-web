@@ -39,6 +39,15 @@ function checkRateLimit(ip) {
   return { allowed: true };
 }
 
+function escapeHtml(str) {
+  return String(str || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 export async function POST(req) {
   try {
     const body = await req.json();
@@ -81,20 +90,49 @@ export async function POST(req) {
       },
     });
 
+    const subject = `New contact request – ${service}`;
+
+    const text = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Company: ${company || "-"}`,
+      `Service: ${service}`,
+      "",
+      "Message:",
+      message,
+    ].join("\n");
+
+    const html = `
+      <div style="font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:1.4;">
+        <h2 style="margin:0 0 12px 0; font-size:18px;">New contact request</h2>
+        <p style="margin:0 0 10px 0;"><strong>Service:</strong> ${escapeHtml(service)}</p>
+        <p style="margin:0 0 6px 0;"><strong>Name:</strong> ${escapeHtml(name)}</p>
+        <p style="margin:0 0 6px 0;"><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p style="margin:0 0 12px 0;"><strong>Company:</strong> ${escapeHtml(company || "-")}</p>
+        <p style="margin:0 0 6px 0;"><strong>Message:</strong></p>
+        <pre style="white-space:pre-wrap; background:#f6f6f6; padding:12px; border-radius:8px; margin:0;">
+${escapeHtml(message)}
+        </pre>
+        <p style="margin:12px 0 0 0; color:#666; font-size:12px;">
+          Reply to this email to respond directly to the sender.
+        </p>
+      </div>
+    `.trim();
+
     const info = await transporter.sendMail({
+      // Important: keep this as your authenticated mailbox/domain for SPF/DKIM alignment
       from: `"in7ruder" <${process.env.MAIL_FROM}>`,
       to: process.env.MAIL_TO,
       replyTo: email,
-      subject: `New contact request: ${service}`,
-      text: [
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Company: ${company || "-"}`,
-        `Service: ${service}`,
-        "",
-        "Message:",
-        message,
-      ].join("\n"),
+      subject,
+      text,
+      html,
+
+      headers: {
+        // Helps some providers correlate & reduces weird auto-replies
+        "X-Entity-Ref-ID": `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        "X-Auto-Response-Suppress": "All", // mostly for Outlook/Exchange
+      },
     });
 
     return NextResponse.json(

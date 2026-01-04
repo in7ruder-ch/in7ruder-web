@@ -41,7 +41,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main className="pt-14">
+    <main>
       <Hero />
       <Services />
       <Whoami />

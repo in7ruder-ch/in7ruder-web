@@ -5,7 +5,8 @@ import { useEffect } from "react";
 function scrollToHash(hash, { behavior = "smooth" } = {}) {
   if (!hash) return false;
 
-  const id = hash.startsWith("#") ? hash.slice(1) : hash;
+  const raw = hash.startsWith("#") ? hash.slice(1) : hash;
+  const id = decodeURIComponent(raw);
   if (!id) return false;
 
   const el = document.getElementById(id);
@@ -18,20 +19,20 @@ function scrollToHash(hash, { behavior = "smooth" } = {}) {
 function attemptScrollToHash(hash, { behavior = "smooth" } = {}) {
   if (!hash) return;
 
-  requestAnimationFrame(() => {
-    let tries = 0;
-    const maxTries = 20;
+  let tries = 0;
+  const maxTries = 30;
 
-    const attempt = () => {
-      tries += 1;
-      const ok = scrollToHash(hash, { behavior });
-      if (!ok && tries < maxTries) {
-        setTimeout(attempt, 50);
-      }
-    };
+  const attempt = () => {
+    tries += 1;
+    const ok = scrollToHash(hash, { behavior });
 
-    attempt();
-  });
+    if (!ok && tries < maxTries) {
+      requestAnimationFrame(attempt);
+    }
+  };
+
+  // wait one frame so layout/hydration can settle
+  requestAnimationFrame(attempt);
 }
 
 export default function SmoothScroll() {
@@ -41,14 +42,22 @@ export default function SmoothScroll() {
       attemptScrollToHash(window.location.hash, { behavior: "smooth" });
     }
 
-    // 2) Handle hash changes
+    // 2) Handle hash changes (native)
     const onHashChange = () => {
       attemptScrollToHash(window.location.hash, { behavior: "smooth" });
     };
 
-    window.addEventListener("hashchange", onHashChange);
+    // 3) Handle history navigation (pushState/back/forward)
+    const onPopState = () => {
+      if (window.location.hash) {
+        attemptScrollToHash(window.location.hash, { behavior: "smooth" });
+      }
+    };
 
-    // 3) Intercept same-page anchor clicks for smooth behavior:
+    window.addEventListener("hashchange", onHashChange);
+    window.addEventListener("popstate", onPopState);
+
+    // 4) Intercept same-page anchor clicks for smooth behavior:
     // - "#contact"
     // - "/#contact" (only when already on "/")
     const onClick = (e) => {
@@ -61,7 +70,12 @@ export default function SmoothScroll() {
       // Case A: "#section"
       if (href.startsWith("#")) {
         e.preventDefault();
-        history.pushState(null, "", href);
+
+        // set hash via location (more consistent than pushState for scrolling)
+        if (window.location.hash !== href) {
+          window.location.hash = href;
+        }
+
         attemptScrollToHash(href, { behavior: "smooth" });
         return;
       }
@@ -76,7 +90,11 @@ export default function SmoothScroll() {
         if (!hash || hash === "#") return;
 
         e.preventDefault();
-        history.pushState(null, "", hash);
+
+        if (window.location.hash !== hash) {
+          window.location.hash = hash;
+        }
+
         attemptScrollToHash(hash, { behavior: "smooth" });
       }
     };
@@ -85,6 +103,7 @@ export default function SmoothScroll() {
 
     return () => {
       window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener("popstate", onPopState);
       document.removeEventListener("click", onClick);
     };
   }, []);

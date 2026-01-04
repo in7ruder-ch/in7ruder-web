@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
+/* Force dark theme globally (single theme) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+/* Helps browsers render native UI (form controls, scrollbars) in dark mode */
+html {
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -11,13 +17,6 @@
   --color-brand: #16C784;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {

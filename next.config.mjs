@@ -17,25 +17,26 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      { source: "/index.html", destination: "/", permanent: true },
+      { source: "/", destination: "/en", permanent: true },
+      { source: "/index.html", destination: "/en", permanent: true },
       {
         source: "/social-engineering.html",
-        destination: "/services/social-engineering-readiness",
+        destination: "/en/services/social-engineering-readiness",
         permanent: true,
       },
       {
         source: "/services/social-engineering-training",
-        destination: "/services/social-engineering-readiness",
+        destination: "/en/services/social-engineering-readiness",
         permanent: true,
       },
       {
-        source: "/services/secure-fullstack",
-        destination: "/#services",
+        source: "/services/social-engineering-readiness",
+        destination: "/en/services/social-engineering-readiness",
         permanent: true,
       },
       {
-        source: "/work",
-        destination: "/#about",
+        source: "/services/pentesting",
+        destination: "/en/services/pentesting",
         permanent: true,
       },
     ];

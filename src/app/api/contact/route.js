@@ -11,12 +11,15 @@ const allowedServices = new Set([
   "social-engineering-training",
   "phishing-readiness",
   "penetration-testing",
-  "appsec-review",
   "not-sure",
 ]);
 
-const allowedCompanySizes = new Set(["", "1-19", "20-49", "50-249", "250+"]);
 const emailPattern = /^[^\s@\r\n]+@[^\s@\r\n]+\.[^\s@\r\n]+$/;
+
+const errors = {
+  en: { rate: "Too many requests. Please try again later.", fields: "Please check the required fields and try again.", unavailable: "Contact is temporarily unavailable. Please email matias@in7ruder.com." },
+  de: { rate: "Zu viele Anfragen. Bitte versuchen Sie es später erneut.", fields: "Bitte prüfen Sie die Pflichtfelder und versuchen Sie es erneut.", unavailable: "Das Kontaktformular ist vorübergehend nicht verfügbar. Bitte schreiben Sie an matias@in7ruder.com." },
+};
 
 function clean(value, maxLength) {
   return String(value || "").trim().slice(0, maxLength);
@@ -61,26 +64,27 @@ export async function POST(request) {
     }
     const body = JSON.parse(rawBody);
     if (clean(body.website, 200)) return NextResponse.json({ ok: true });
+    const language = body.lang === "de" ? "de" : "en";
+    const errorCopy = errors[language];
 
     if (!isAllowed(getClientIp(request))) {
-      return NextResponse.json({ ok: false, error: "Too many requests. Please try again later." }, { status: 429 });
+      return NextResponse.json({ ok: false, error: errorCopy.rate }, { status: 429 });
     }
 
     const name = clean(body.name, 80);
     const email = clean(body.email, 160).toLowerCase();
     const company = clean(body.company, 120);
-    const companySize = clean(body.companySize, 12);
     const service = clean(body.service, 60);
     const message = clean(body.message, 2000);
 
-    if (!name || !emailPattern.test(email) || !allowedServices.has(service) || !allowedCompanySizes.has(companySize) || message.length < 20) {
-      return NextResponse.json({ ok: false, error: "Please check the required fields and try again." }, { status: 400 });
+    if (!name || !emailPattern.test(email) || !allowedServices.has(service) || message.length < 20) {
+      return NextResponse.json({ ok: false, error: errorCopy.fields }, { status: 400 });
     }
 
     const requiredEnvironment = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "MAIL_FROM", "MAIL_TO"];
     if (requiredEnvironment.some((key) => !process.env[key])) {
       console.error("CONTACT_CONFIGURATION_ERROR");
-      return NextResponse.json({ ok: false, error: "Contact is temporarily unavailable. Please email matias@in7ruder.com." }, { status: 503 });
+      return NextResponse.json({ ok: false, error: errorCopy.unavailable }, { status: 503 });
     }
 
     const transporter = nodemailer.createTransport({
@@ -92,9 +96,9 @@ export async function POST(request) {
       disableUrlAccess: true,
     });
 
-    const safe = { name: escapeHtml(name), email: escapeHtml(email), company: escapeHtml(company || "Not provided"), companySize: escapeHtml(companySize || "Not provided"), service: escapeHtml(service), message: escapeHtml(message) };
-    const text = `Name: ${name}\nEmail: ${email}\nCompany: ${company || "Not provided"}\nCompany size: ${companySize || "Not provided"}\nService: ${service}\n\nContext:\n${message}`;
-    const html = `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.5"><h2>New security call request</h2><p><strong>Name:</strong> ${safe.name}</p><p><strong>Email:</strong> ${safe.email}</p><p><strong>Company:</strong> ${safe.company}</p><p><strong>Company size:</strong> ${safe.companySize}</p><p><strong>Service:</strong> ${safe.service}</p><p><strong>Context:</strong></p><pre style="white-space:pre-wrap;background:#f3f5ef;padding:16px;border-radius:8px">${safe.message}</pre></div>`;
+    const safe = { name: escapeHtml(name), email: escapeHtml(email), company: escapeHtml(company || "Not provided"), service: escapeHtml(service), message: escapeHtml(message) };
+    const text = `Language: ${language}\nName: ${name}\nEmail: ${email}\nCompany: ${company || "Not provided"}\nService: ${service}\n\nContext:\n${message}`;
+    const html = `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.5"><h2>New security call request</h2><p><strong>Language:</strong> ${language}</p><p><strong>Name:</strong> ${safe.name}</p><p><strong>Email:</strong> ${safe.email}</p><p><strong>Company:</strong> ${safe.company}</p><p><strong>Service:</strong> ${safe.service}</p><p><strong>Context:</strong></p><pre style="white-space:pre-wrap;background:#f3f5ef;padding:16px;border-radius:8px">${safe.message}</pre></div>`;
 
     const info = await transporter.sendMail({
       from: `"in7ruder" <${process.env.MAIL_FROM}>`,

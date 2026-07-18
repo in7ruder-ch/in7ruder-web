@@ -1,9 +1,10 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Work",
   description:
-    "Proof over promises. Projects, credentials, and results—real work across web apps, security improvements, and technical delivery.",
+    "Proof over promises. Projects, credentials and results from real work across web apps, security improvements and technical delivery.",
 
   alternates: {
     canonical: "https://in7ruder.com/work",
@@ -14,14 +15,14 @@ export const metadata = {
     url: "https://in7ruder.com/work",
     title: "in7ruder | Work",
     description:
-      "Proof over promises. Projects, credentials, and results—real work across web apps, security improvements, and technical delivery.",
+      "Proof over promises. Projects, credentials and results from real work across web apps, security improvements and technical delivery.",
     siteName: "in7ruder",
     images: [
       {
         url: "/img/logo-in7ruder.png",
         width: 1200,
         height: 630,
-        alt: "in7ruder – Work",
+        alt: "in7ruder Work",
       },
     ],
   },
@@ -30,7 +31,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "in7ruder | Work",
     description:
-      "Projects, credentials, and results—real work across web apps and security improvements.",
+      "Projects, credentials and results from real work across web apps and security improvements.",
     images: ["/img/logo-in7ruder.png"],
   },
 };
@@ -90,10 +91,9 @@ export default function WorkPage() {
   ];
 
   return (
-    <main className="">
+    <main className="min-h-screen bg-zinc-950 px-[max(1.25rem,calc((100vw-72rem)/2))] text-zinc-100">
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
@@ -180,10 +180,6 @@ export default function WorkPage() {
                   </span>
                 </li>
 
-                <li className="flex gap-3">
-                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-white/70" />
-                  <span>Languages: English, Spanish, German</span>
-                </li>
               </ul>
             </div>
           </div>
@@ -212,9 +208,11 @@ export default function WorkPage() {
               </h3>
 
               <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
-                <img
+                <Image
                   src="/img/projects/hc.png"
                   alt="Hermanos Corallo preview"
+                  width={800}
+                  height={450}
                   className="w-full aspect-video object-cover"
                 />
               </div>
@@ -262,9 +260,11 @@ export default function WorkPage() {
               </h3>
 
               <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
-                <img
+                <Image
                   src="/img/projects/cv.png"
                   alt="Corinne Vanarelli website preview"
+                  width={800}
+                  height={450}
                   className="w-full aspect-video object-cover"
                 />
               </div>
@@ -311,9 +311,11 @@ export default function WorkPage() {
               </h3>
 
               <div className="overflow-hidden rounded-xl border border-white/10 bg-black/20">
-                <img
+                <Image
                   src="/img/projects/ing.png"
                   alt="Ingredienza store preview"
+                  width={800}
+                  height={450}
                   className="w-full aspect-video object-cover"
                 />
               </div>

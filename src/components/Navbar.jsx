@@ -1,324 +1,79 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-function IconMenu({ className = "h-5 w-5" }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M4 6h16" />
-      <path d="M4 12h16" />
-      <path d="M4 18h16" />
-    </svg>
-  );
-}
-
-function IconX({ className = "h-5 w-5" }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M6 6l12 12" />
-      <path d="M18 6l-12 12" />
-    </svg>
-  );
-}
+const navigation = [
+  { label: "Services", href: "/#services" },
+  { label: "Approach", href: "/#approach" },
+  { label: "About", href: "/#about" },
+  { label: "Contact", href: "/#contact" },
+];
 
 export default function Navbar() {
-  const pathname = usePathname();
-
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const closeTimer = useRef(null);
-
-  const openServices = () => {
-    if (closeTimer.current) {
-      clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
-    setServicesOpen(true);
-  };
-
-  const closeServicesWithDelay = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => {
-      setServicesOpen(false);
-    }, 140);
-  };
-
-  const closeAll = () => {
-    if (closeTimer.current) {
-      clearTimeout(closeTimer.current);
-      closeTimer.current = null;
-    }
-    setServicesOpen(false);
-    setMobileOpen(false);
-  };
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    return () => {
-      if (closeTimer.current) clearTimeout(closeTimer.current);
-    };
-  }, []);
-
-  // Lock body scroll when mobile menu is open (prevents iOS layout weirdness)
-  useEffect(() => {
-    if (!mobileOpen) return;
-
-    const prevOverflow = document.body.style.overflow;
-    const prevTouchAction = document.body.style.touchAction;
-
+    if (!open) return undefined;
+    const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    document.body.style.touchAction = "none";
-
     return () => {
-      document.body.style.overflow = prevOverflow;
-      document.body.style.touchAction = prevTouchAction;
+      document.body.style.overflow = previous;
     };
-  }, [mobileOpen]);
-
-  // From /services/<slug> -> ?service=<slug>#contact
-  const requestQuoteHref = useMemo(() => {
-    if (!pathname) return "/#contact";
-
-    const match = pathname.match(/^\/services\/([^/]+)$/);
-    if (!match) return "/#contact";
-
-    const slug = match[1]; // pentesting | secure-fullstack | social-engineering-training
-    return `/?service=${encodeURIComponent(slug)}#contact`;
-  }, [pathname]);
+  }, [open]);
 
   return (
-    <header className="relative z-50 border-b border-white/10">
-      <div className="mx-auto max-w-6xl px-5 py-6 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center" onClick={closeAll}>
-          <Image
-            src="/img/logo-in7ruder.png"
-            alt="in7ruder"
-            width={140}
-            height={32}
-            priority
-            className="h-auto w-auto"
-          />
+    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--canvas)]/95 backdrop-blur-lg">
+      <a href="#main-content" className="absolute left-5 top-3 z-[60] -translate-y-24 bg-[var(--ink)] px-4 py-2 text-sm font-semibold text-white transition focus:translate-y-0">
+        Skip to content
+      </a>
+
+      <div className="page-wrap flex h-[76px] items-center justify-between">
+        <Link href="/" aria-label="in7ruder home" className="relative z-50 inline-flex items-center">
+          <Image src="/img/logo-in7ruder.png" alt="in7ruder" width={166} height={40} priority className="h-auto w-[142px] brightness-0" />
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-6 text-sm text-zinc-300">
-          {/* Services dropdown (hover only) */}
-          <div
-            className="relative"
-            onMouseEnter={openServices}
-            onMouseLeave={closeServicesWithDelay}
-          >
-            <button
-              type="button"
-              className="inline-flex items-center gap-1 hover:text-white transition"
-              aria-haspopup="true"
-              aria-expanded={servicesOpen ? "true" : "false"}
-              onClick={(e) => e.preventDefault()}
-            >
-              Services
-              <span className="text-white/40">▾</span>
-            </button>
-
-            <div
-              className={`absolute left-0 top-full h-3 w-72 ${
-                servicesOpen ? "block" : "hidden"
-              }`}
-              aria-hidden="true"
-            />
-
-            <div
-              className={`absolute left-0 top-full mt-0 z-50 w-72 rounded-2xl border border-white/10 bg-zinc-950/95 backdrop-blur p-2 shadow-lg ${
-                servicesOpen ? "block" : "hidden"
-              }`}
-              onMouseEnter={openServices}
-              onMouseLeave={closeServicesWithDelay}
-            >
-              <div className="flex flex-col">
-                <Link
-                  href="/services/pentesting"
-                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                  onClick={() => setServicesOpen(false)}
-                >
-                  Pentesting
-                </Link>
-                <Link
-                  href="/services/secure-fullstack"
-                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                  onClick={() => setServicesOpen(false)}
-                >
-                  Secure Full-Stack
-                </Link>
-                <Link
-                  href="/services/social-engineering-training"
-                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                  onClick={() => setServicesOpen(false)}
-                >
-                  Social Engineering Training
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <Link
-            href="/work"
-            className="hover:text-white transition"
-            onClick={closeAll}
-          >
-            Whoami
-          </Link>
-
-          <Link
-            href="/#resources"
-            className="hover:text-white transition"
-            onClick={closeAll}
-          >
-            Resources
-          </Link>
-
-          <Link
-            href="/#contact"
-            className="hover:text-white transition"
-            onClick={closeAll}
-          >
-            Contact
-          </Link>
+        <nav aria-label="Primary navigation" className="hidden items-center gap-9 md:flex">
+          {navigation.map((item) => (
+            <Link key={item.href} href={item.href} className="text-[0.82rem] font-semibold text-[#3f4642] transition hover:text-[var(--accent)]">
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
-        {/* Right side */}
-        <div
-          className={`flex items-center gap-3 ${
-            mobileOpen ? "relative z-[9999]" : ""
-          }`}
-        >
-          <Link
-            href={requestQuoteHref}
-            className="hidden md:inline-flex items-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-[var(--color-brand)] hover:!text-white transition-colors"
-            onClick={closeAll}
-          >
-            Request a quote
-          </Link>
+        <Link href="/#contact" className="nav-cta hidden md:inline-flex">
+          Schedule a conversation
+        </Link>
 
-          {/* Mobile toggle */}
-          <button
-            type="button"
-            className="md:hidden inline-flex h-10 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 transition leading-none shrink-0"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen ? "true" : "false"}
-            onClick={() => setMobileOpen((v) => !v)}
-          >
-            <span className="inline-flex items-center justify-center text-white">
-              {mobileOpen ? (
-                <IconX className="h-5 w-5" />
-              ) : (
-                <IconMenu className="h-5 w-5" />
-              )}
-            </span>
-          </button>
-        </div>
+        <button
+          type="button"
+          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
+          onClick={() => setOpen((value) => !value)}
+          className="relative z-50 grid h-11 w-11 place-items-center border border-[var(--line)] md:hidden"
+        >
+          <span aria-hidden="true" className="flex flex-col gap-1.5">
+            <span className={`block h-px w-5 bg-[var(--ink)] transition ${open ? "translate-y-[3.5px] rotate-45" : ""}`} />
+            <span className={`block h-px w-5 bg-[var(--ink)] transition ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`} />
+          </span>
+        </button>
       </div>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <>
-          {/* Overlay */}
-          <button
-            type="button"
-            aria-label="Close menu overlay"
-            onClick={closeAll}
-            className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
-          />
-
-          {/* Panel */}
-          <div className="md:hidden fixed left-0 right-0 top-[73px] z-50 mt-4 border-t border-white/10 bg-zinc-950/95 backdrop-blur">
-            <div className="mx-auto max-w-6xl px-5 py-5 space-y-4">
-              <div className="space-y-2">
-                <p className="text-xs uppercase tracking-widest text-white/40">
-                  Services
-                </p>
-                <div className="grid gap-1">
-                  <Link
-                    href="/services/pentesting"
-                    className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                    onClick={closeAll}
-                  >
-                    Pentesting
-                  </Link>
-                  <Link
-                    href="/services/secure-fullstack"
-                    className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                    onClick={closeAll}
-                  >
-                    Secure Full-Stack
-                  </Link>
-                  <Link
-                    href="/services/social-engineering-training"
-                    className="rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                    onClick={closeAll}
-                  >
-                    Social Engineering Training
-                  </Link>
-                </div>
-              </div>
-
-              <div className="space-y-1 pt-2 border-t border-white/10">
-                <Link
-                  href="/work"
-                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                  onClick={closeAll}
-                >
-                  Whoami
-                </Link>
-
-                <Link
-                  href="/#resources"
-                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                  onClick={closeAll}
-                >
-                  Resources
-                </Link>
-
-                <Link
-                  href="/#contact"
-                  className="block rounded-xl px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/5 transition"
-                  onClick={closeAll}
-                >
-                  Contact
-                </Link>
-
-                <Link
-                  href={requestQuoteHref}
-                  className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-[var(--color-brand)] hover:!text-white transition-colors"
-                  onClick={closeAll}
-                >
-                  Request a quote
-                </Link>
-              </div>
-            </div>
-          </div>
-        </>
+      {open && (
+        <div id="mobile-navigation" className="fixed inset-0 z-40 bg-[var(--canvas)] px-5 pt-28 md:hidden">
+          <nav aria-label="Mobile navigation" className="mx-auto flex max-w-lg flex-col">
+            {navigation.map((item) => (
+              <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="border-b border-[var(--line)] py-5 text-3xl serif-display">
+                {item.label}
+              </Link>
+            ))}
+            <Link href="/#contact" onClick={() => setOpen(false)} className="nav-cta mt-8 justify-center px-5 py-4">
+              Schedule a conversation
+            </Link>
+          </nav>
+        </div>
       )}
     </header>
   );

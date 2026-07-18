@@ -1,23 +1,43 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), browsing-topics=()" },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+        ],
+      },
+    ];
+  },
   async redirects() {
     return [
-      // Canonical-ish: /index.html -> /
-      {
-        source: "/index.html",
-        destination: "/",
-        permanent: true, // 301
-      },
-
-      // If your old HTML had service pages:
+      { source: "/index.html", destination: "/", permanent: true },
       {
         source: "/social-engineering.html",
-        destination: "/services/social-engineering-training",
-        permanent: true, // 301
+        destination: "/services/social-engineering-readiness",
+        permanent: true,
       },
-
-      // Add more mappings here ONLY if you want to preserve equivalents.
-      // For old blog pages you are removing, we return 410 via middleware.
+      {
+        source: "/services/social-engineering-training",
+        destination: "/services/social-engineering-readiness",
+        permanent: true,
+      },
+      {
+        source: "/services/secure-fullstack",
+        destination: "/#services",
+        permanent: true,
+      },
+      {
+        source: "/work",
+        destination: "/#about",
+        permanent: true,
+      },
     ];
   },
 };

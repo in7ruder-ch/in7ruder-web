@@ -1,157 +1,114 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
-
+const MAX_BODY_BYTES = 16_000;
 const ipHits = new Map();
 
-function getClientIp(req) {
-  const xf = req.headers.get("x-forwarded-for");
-  if (xf) return xf.split(",")[0].trim();
+const allowedServices = new Set([
+  "social-engineering-readiness",
+  "social-engineering-training",
+  "phishing-readiness",
+  "penetration-testing",
+  "appsec-review",
+  "not-sure",
+]);
 
-  const xr = req.headers.get("x-real-ip");
-  if (xr) return xr.trim();
+const allowedCompanySizes = new Set(["", "1-19", "20-49", "50-249", "250+"]);
+const emailPattern = /^[^\s@\r\n]+@[^\s@\r\n]+\.[^\s@\r\n]+$/;
 
-  return "unknown";
+function clean(value, maxLength) {
+  return String(value || "").trim().slice(0, maxLength);
 }
 
-function checkRateLimit(ip) {
+function getClientIp(request) {
+  const forwarded = request.headers.get("x-forwarded-for");
+  return forwarded?.split(",")[0]?.trim() || request.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
+function isAllowed(ip) {
   const now = Date.now();
-  const hit = ipHits.get(ip);
-
-  if (!hit) {
+  if (ipHits.size > 5_000) {
+    for (const [key, value] of ipHits) {
+      if (now > value.resetAt) ipHits.delete(key);
+    }
+  }
+  const existing = ipHits.get(ip);
+  if (!existing || now > existing.resetAt) {
     ipHits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return { allowed: true };
+    return true;
   }
-
-  if (now > hit.resetAt) {
-    ipHits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return { allowed: true };
-  }
-
-  if (hit.count >= RATE_LIMIT_MAX) {
-    return { allowed: false, resetAt: hit.resetAt };
-  }
-
-  hit.count += 1;
-  ipHits.set(ip, hit);
-  return { allowed: true };
+  if (existing.count >= RATE_LIMIT_MAX) return false;
+  existing.count += 1;
+  return true;
 }
 
-function escapeHtml(str) {
-  return String(str || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function escapeHtml(value) {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
 
-export async function POST(req) {
+export async function POST(request) {
   try {
-    const body = await req.json();
-
-    const ip = getClientIp(req);
-    const rl = checkRateLimit(ip);
-
-    if (!rl.allowed) {
-      return NextResponse.json(
-        { ok: false, error: "Too many requests. Please try again later." },
-        { status: 429 }
-      );
+    const contentType = request.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 415 });
     }
 
-    const name = String(body.name || "").trim();
-    const email = String(body.email || "").trim();
-    const company = String(body.company || "").trim();
-    const service = String(body.service || "").trim();
-    const message = String(body.message || "").trim();
+    const rawBody = await request.text();
+    if (rawBody.length > MAX_BODY_BYTES) {
+      return NextResponse.json({ ok: false, error: "Request is too large." }, { status: 413 });
+    }
+    const body = JSON.parse(rawBody);
+    if (clean(body.website, 200)) return NextResponse.json({ ok: true });
 
-    const website = String(body.website || "").trim();
-    if (website) {
-      return NextResponse.json({ ok: true }, { status: 200 });
+    if (!isAllowed(getClientIp(request))) {
+      return NextResponse.json({ ok: false, error: "Too many requests. Please try again later." }, { status: 429 });
     }
 
-    if (!name || !email || !service || !message) {
-      return NextResponse.json(
-        { ok: false, error: "Missing required fields" },
-        { status: 400 }
-      );
+    const name = clean(body.name, 80);
+    const email = clean(body.email, 160).toLowerCase();
+    const company = clean(body.company, 120);
+    const companySize = clean(body.companySize, 12);
+    const service = clean(body.service, 60);
+    const message = clean(body.message, 2000);
+
+    if (!name || !emailPattern.test(email) || !allowedServices.has(service) || !allowedCompanySizes.has(companySize) || message.length < 20) {
+      return NextResponse.json({ ok: false, error: "Please check the required fields and try again." }, { status: 400 });
+    }
+
+    const requiredEnvironment = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "MAIL_FROM", "MAIL_TO"];
+    if (requiredEnvironment.some((key) => !process.env[key])) {
+      console.error("CONTACT_CONFIGURATION_ERROR");
+      return NextResponse.json({ ok: false, error: "Contact is temporarily unavailable. Please email matias@in7ruder.com." }, { status: 503 });
     }
 
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 0),
+      port: Number(process.env.SMTP_PORT),
       secure: process.env.SMTP_SECURE === "true",
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+      disableFileAccess: true,
+      disableUrlAccess: true,
     });
 
-    const subject = `New contact request – ${service}`;
-
-    const text = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Company: ${company || "-"}`,
-      `Service: ${service}`,
-      "",
-      "Message:",
-      message,
-    ].join("\n");
-
-    const html = `
-      <div style="font-family:Arial,Helvetica,sans-serif; font-size:14px; line-height:1.4;">
-        <h2 style="margin:0 0 12px 0; font-size:18px;">New contact request</h2>
-        <p style="margin:0 0 10px 0;"><strong>Service:</strong> ${escapeHtml(service)}</p>
-        <p style="margin:0 0 6px 0;"><strong>Name:</strong> ${escapeHtml(name)}</p>
-        <p style="margin:0 0 6px 0;"><strong>Email:</strong> ${escapeHtml(email)}</p>
-        <p style="margin:0 0 12px 0;"><strong>Company:</strong> ${escapeHtml(company || "-")}</p>
-        <p style="margin:0 0 6px 0;"><strong>Message:</strong></p>
-        <pre style="white-space:pre-wrap; background:#f6f6f6; padding:12px; border-radius:8px; margin:0;">
-${escapeHtml(message)}
-        </pre>
-        <p style="margin:12px 0 0 0; color:#666; font-size:12px;">
-          Reply to this email to respond directly to the sender.
-        </p>
-      </div>
-    `.trim();
+    const safe = { name: escapeHtml(name), email: escapeHtml(email), company: escapeHtml(company || "Not provided"), companySize: escapeHtml(companySize || "Not provided"), service: escapeHtml(service), message: escapeHtml(message) };
+    const text = `Name: ${name}\nEmail: ${email}\nCompany: ${company || "Not provided"}\nCompany size: ${companySize || "Not provided"}\nService: ${service}\n\nContext:\n${message}`;
+    const html = `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.5"><h2>New security call request</h2><p><strong>Name:</strong> ${safe.name}</p><p><strong>Email:</strong> ${safe.email}</p><p><strong>Company:</strong> ${safe.company}</p><p><strong>Company size:</strong> ${safe.companySize}</p><p><strong>Service:</strong> ${safe.service}</p><p><strong>Context:</strong></p><pre style="white-space:pre-wrap;background:#f3f5ef;padding:16px;border-radius:8px">${safe.message}</pre></div>`;
 
     const info = await transporter.sendMail({
-      // Important: keep this as your authenticated mailbox/domain for SPF/DKIM alignment
       from: `"in7ruder" <${process.env.MAIL_FROM}>`,
       to: process.env.MAIL_TO,
       replyTo: email,
-      subject,
+      subject: `Security call request: ${service}`,
       text,
       html,
-
-      headers: {
-        // Helps some providers correlate & reduces weird auto-replies
-        "X-Entity-Ref-ID": `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-        "X-Auto-Response-Suppress": "All", // mostly for Outlook/Exchange
-      },
+      headers: { "X-Auto-Response-Suppress": "All" },
     });
 
-    return NextResponse.json(
-      { ok: true, messageId: info.messageId || null },
-      { status: 200 }
-    );
-  } catch (err) {
-    console.error("CONTACT_API_ERROR", err);
-
-    return NextResponse.json(
-      {
-        ok: false,
-        error: "Server error",
-        detail:
-          process.env.NODE_ENV === "development"
-            ? String(err?.message || err)
-            : undefined,
-      },
-      { status: 500 }
-    );
+    return NextResponse.json({ ok: true, messageId: info.messageId || null });
+  } catch (error) {
+    console.error("CONTACT_API_ERROR", error);
+    return NextResponse.json({ ok: false, error: "Server error. Please email matias@in7ruder.com." }, { status: 500 });
   }
 }

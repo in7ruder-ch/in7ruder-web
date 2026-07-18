@@ -4,6 +4,11 @@ const nextConfig = {
     return [
       {
         source: "/:path*",
+        has: [{ type: "host", value: "in7ruder.vercel.app" }],
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      {
+        source: "/:path*",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },

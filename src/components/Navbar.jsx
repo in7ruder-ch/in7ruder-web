@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const navigation = [
@@ -12,14 +13,16 @@ const navigation = [
 ];
 
 const labels = {
-  en: { services: "Services", approach: "Approach", about: "About", contact: "Contact", cta: "Schedule a conversation", open: "Open navigation", close: "Close navigation", skip: "Skip to content" },
-  de: { services: "Leistungen", approach: "Arbeitsweise", about: "Über mich", contact: "Kontakt", cta: "Erstgespräch vereinbaren", open: "Navigation öffnen", close: "Navigation schließen", skip: "Zum Inhalt springen" },
+  en: { services: "Services", approach: "Approach", about: "About", contact: "Contact", open: "Open navigation", close: "Close navigation", skip: "Skip to content" },
+  de: { services: "Leistungen", approach: "Arbeitsweise", about: "Über mich", contact: "Kontakt", open: "Navigation öffnen", close: "Navigation schließen", skip: "Zum Inhalt springen" },
 };
 
 export default function Navbar({ lang = "en" }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const copy = labels[lang] || labels.en;
   const home = `/${lang}`;
+  const languageHref = (target) => pathname.replace(/^\/(en|de)(?=\/|$)/, `/${target}`) || `/${target}`;
 
   useEffect(() => {
     if (!open) return undefined;
@@ -41,26 +44,43 @@ export default function Navbar({ lang = "en" }) {
           <Image src="/img/logo-in7ruder.png" alt="in7ruder" width={166} height={40} priority className="h-auto w-[142px] brightness-0" />
         </Link>
 
-        <nav aria-label="Primary navigation" className="hidden items-center gap-9 md:flex">
+        <nav aria-label="Primary navigation" className="ml-auto hidden items-center gap-9 md:flex">
           {navigation.map((item) => (
             <Link key={item.key} href={`${home}/#${item.hash}`} className="text-[0.82rem] font-semibold text-[#3f4642] transition hover:text-[var(--accent)]">
               {copy[item.key]}
             </Link>
           ))}
+          <span aria-hidden="true" className="h-7 w-px bg-[var(--line)]">
+            <span className="sr-only">|</span>
+          </span>
+          <div className="flex items-center gap-3" aria-label="Language selection">
+            {["en", "de"].map((language) => (
+              <Link
+                key={language}
+                href={languageHref(language)}
+                hrefLang={`${language}-CH`}
+                aria-current={lang === language ? "page" : undefined}
+                className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] transition hover:text-[var(--accent)] ${lang === language ? "border-[var(--ink)] text-[var(--ink)]" : "border-transparent text-[var(--muted)]"}`}
+              >
+                {language.toUpperCase()}
+              </Link>
+            ))}
+          </div>
         </nav>
 
-        <div className="hidden items-center gap-5 md:flex">
-          <Link href={lang === "en" ? "/de" : "/en"} hrefLang={lang === "en" ? "de-CH" : "en-CH"} className="text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)] transition hover:text-[var(--accent)]">
-            {lang === "en" ? "DE" : "EN"}
-          </Link>
-          <Link href={`${home}/#contact`} className="nav-cta">
-            {copy.cta}
-          </Link>
+        <div className="relative z-50 ml-auto mr-3 flex items-center gap-2 md:hidden" aria-label="Language selection">
+          {["en", "de"].map((language) => (
+            <Link
+              key={language}
+              href={languageHref(language)}
+              hrefLang={`${language}-CH`}
+              aria-current={lang === language ? "page" : undefined}
+              className={`border-b pb-1 text-xs font-bold uppercase tracking-[0.12em] ${lang === language ? "border-[var(--ink)] text-[var(--ink)]" : "border-transparent text-[var(--muted)]"}`}
+            >
+              {language.toUpperCase()}
+            </Link>
+          ))}
         </div>
-
-        <Link href={lang === "en" ? "/de" : "/en"} hrefLang={lang === "en" ? "de-CH" : "en-CH"} className="relative z-50 mr-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)] md:hidden">
-          {lang === "en" ? "DE" : "EN"}
-        </Link>
 
         <button
           type="button"
@@ -85,9 +105,6 @@ export default function Navbar({ lang = "en" }) {
                 {copy[item.key]}
               </Link>
             ))}
-            <Link href={`${home}/#contact`} onClick={() => setOpen(false)} className="nav-cta mt-8 justify-center px-5 py-4">
-              {copy.cta}
-            </Link>
           </nav>
         </div>
       )}

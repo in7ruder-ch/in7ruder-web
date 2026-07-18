@@ -24,7 +24,13 @@ export async function generateMetadata({ params }) {
     },
     description: german ? "Praxisnahe Social Engineering Readiness und autorisierte Penetrationstests für Unternehmen in der Schweiz." : "Practical social engineering readiness programs and authorized penetration testing for organizations in Switzerland.",
     robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
-    icons: { icon: "/favicon.ico" },
+    icons: {
+      icon: [
+        { url: "/icon.png", type: "image/png", sizes: "512x512" },
+        { url: "/favicon.ico", sizes: "any" },
+      ],
+      apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    },
   };
 }
 

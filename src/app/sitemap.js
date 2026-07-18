@@ -1,29 +1,19 @@
-// src/app/sitemap.js
-// Next.js will serve this at /sitemap.xml
+import { localizedUrl } from "@/lib/i18n";
 
-const BASE_URL = "https://in7ruder.com";
+const LAST_CONTENT_UPDATE = new Date("2026-07-18T00:00:00.000Z");
+const paths = ["", "services/social-engineering-readiness", "services/pentesting"];
 
 export default function sitemap() {
-  const lastModified = new Date();
-
-  return [
-    {
-      url: `${BASE_URL}/`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 1.0,
-    },
-    {
-      url: `${BASE_URL}/services/social-engineering-readiness`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/services/pentesting`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-  ];
+  return paths.flatMap((path) => {
+    const languages = {
+      "en-CH": localizedUrl("en", path),
+      "de-CH": localizedUrl("de", path),
+      "x-default": localizedUrl("en", path),
+    };
+    return ["en", "de"].map((lang) => ({
+      url: localizedUrl(lang, path),
+      lastModified: LAST_CONTENT_UPDATE,
+      alternates: { languages },
+    }));
+  });
 }

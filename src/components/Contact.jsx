@@ -1,290 +1,105 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
-function normalizeKey(v) {
-  return String(v || "")
-    .trim()
-    .toLowerCase()
-    .replace(/_/g, "-")
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "")
-    .replace(/-+/g, "-");
-}
+const serviceOptions = [
+  { value: "social-engineering-readiness", label: "Social Engineering Readiness" },
+  { value: "penetration-testing", label: "Penetration Testing" },
+  { value: "appsec-review", label: "Application Security Review" },
+  { value: "not-sure", label: "I would like to discuss the situation first" },
+];
 
-function buildServiceAliasMap(options) {
-  // Map many possible incoming values -> exact option label from contact.json
-  // We *must* return one of the real option strings for the <select> to match.
-  const find = (predicate) => options.find(predicate);
+const aliases = {
+  pentesting: "penetration-testing",
+  "phishing-readiness": "social-engineering-readiness",
+  "social-engineering-training": "social-engineering-readiness",
+  "corporate-social-engineering-training": "social-engineering-readiness",
+  "secure-fullstack": "appsec-review",
+  "secure-full-stack-development": "appsec-review",
+};
 
-  const optPentesting = find((o) => normalizeKey(o) === "pentesting") || "Pentesting";
+function ContactForm() {
+  const searchParams = useSearchParams();
+  const incoming = searchParams.get("service") || "";
+  const normalizedIncoming = incoming.toLowerCase().trim().replace(/\s+/g, "-");
+  const initialService = serviceOptions.some((option) => option.value === normalizedIncoming)
+    ? normalizedIncoming
+    : aliases[normalizedIncoming] || "";
+  const [selectedService, setSelectedService] = useState(initialService);
+  const [status, setStatus] = useState("idle");
+  const [message, setMessage] = useState("");
 
-  const optSecure =
-    find((o) => normalizeKey(o).includes("secure-full-stack-development")) ||
-    find((o) => normalizeKey(o).includes("secure-full-stack")) ||
-    "Secure Full-Stack Development";
-
-  const optSE =
-    find((o) => normalizeKey(o).includes("corporate-social-engineering-training")) ||
-    find((o) => normalizeKey(o).includes("social-engineering-training")) ||
-    "Corporate Social Engineering Training";
-
-  const optNotSure =
-    find((o) => normalizeKey(o).includes("not-sure")) || "Not sure yet";
-
-  // aliases (keys) -> canonical option label
-  return {
-    // Pentesting
-    pentesting: optPentesting,
-
-    // Secure Full-Stack Dev
-    "secure-fullstack": optSecure,
-    "secure-full-stack": optSecure,
-    "secure-fullstack-development": optSecure,
-    "secure-full-stack-development": optSecure,
-    "secure-full-stack-dev": optSecure,
-    "secure-fullstack-dev": optSecure,
-    "secure-development": optSecure,
-
-    // Social engineering training
-    "social-engineering-training": optSE,
-    "corporate-social-engineering-training": optSE,
-    "social-engineering": optSE,
-    "se-training": optSE,
-
-    // Not sure
-    "not-sure": optNotSure,
-    "not-sure-yet": optNotSure,
-    unsure: optNotSure,
-  };
-}
-
-export default function Contact() {
-  const [config, setConfig] = useState(null);
-  const [status, setStatus] = useState("idle"); // idle | loading | success | error
-  const [error, setError] = useState(null);
-
-  // Controlled value for the select
-  const [serviceValue, setServiceValue] = useState("");
-
-  const [didAutoScroll, setDidAutoScroll] = useState(false);
-
-  // Read query param immediately (before config), keep it in state
-  const [queryServiceRaw, setQueryServiceRaw] = useState("");
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const svc = params.get("service");
-    if (svc) setQueryServiceRaw(svc);
-  }, []);
-
-  // Fetch config
-  useEffect(() => {
-    fetch("/data/contact.json")
-      .then((res) => res.json())
-      .then(setConfig)
-      .catch(() => setConfig(null));
-  }, []);
-
-  // Once config + queryServiceRaw exist, resolve to one of the real options and set controlled value
-  const serviceOptions = useMemo(() => {
-    if (!config) return [];
-    const field = config.fields?.find((f) => f.type === "select" && f.name === "service");
-    return field?.options || [];
-  }, [config]);
-
-  useEffect(() => {
-    if (!config) return;
-
-    // If no query param, don't force anything (user can choose)
-    if (!queryServiceRaw) return;
-
-    const options = serviceOptions;
-    if (!options.length) return;
-
-    // 1) Exact match (if query already is the label)
-    const exact = options.find((o) => o === queryServiceRaw);
-    if (exact) {
-      setServiceValue(exact);
-      return;
-    }
-
-    // 2) Normalized match against normalized options
-    const key = normalizeKey(queryServiceRaw);
-    const normalizedMap = new Map(options.map((o) => [normalizeKey(o), o]));
-    const directNormalized = normalizedMap.get(key);
-    if (directNormalized) {
-      setServiceValue(directNormalized);
-      return;
-    }
-
-    // 3) Alias mapping (slugs -> correct long labels)
-    const alias = buildServiceAliasMap(options);
-    if (alias[key] && options.includes(alias[key])) {
-      setServiceValue(alias[key]);
-      return;
-    }
-
-    // 4) Last resort: fuzzy includes
-    const fuzzy =
-      options.find((o) => normalizeKey(o).includes(key)) ||
-      options.find((o) => key.includes(normalizeKey(o)));
-    if (fuzzy) {
-      setServiceValue(fuzzy);
-    }
-  }, [config, queryServiceRaw, serviceOptions]);
-
-  // Auto-scroll when arriving with #contact
-  useEffect(() => {
-    if (!config) return;
-    if (didAutoScroll) return;
-
-    if (window.location.hash === "#contact") {
-      const el = document.getElementById("contact");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        setDidAutoScroll(true);
-      }
-    }
-  }, [config, didAutoScroll]);
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    const formEl = e.currentTarget;
-
+  async function handleSubmit(event) {
+    event.preventDefault();
     setStatus("loading");
-    setError(null);
-
-    const formData = new FormData(formEl);
-
-    // Ensure the controlled select is included correctly
-    if (serviceValue) {
-      formData.set("service", serviceValue);
-    }
-
-    const payload = Object.fromEntries(formData.entries());
-
+    setMessage("");
+    const form = event.currentTarget;
+    const payload = Object.fromEntries(new FormData(form).entries());
     try {
-      const res = await fetch("/api/contact", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
-      let data = null;
-      try {
-        data = await res.json();
-      } catch {
-        data = null;
-      }
-
-      if (!res.ok || !data?.ok) {
+      const result = await response.json().catch(() => null);
+      if (!response.ok || !result?.ok) {
         setStatus("error");
-        setError(data?.error || `Request failed (${res.status})`);
+        setMessage(result?.error || "Your request could not be sent. Please email matias@in7ruder.com.");
         return;
       }
-
+      form.reset();
+      setSelectedService("");
       setStatus("success");
-      formEl.reset();
-      setServiceValue(""); // reset controlled field too
-    } catch (err) {
-      console.error("CONTACT_FORM_CLIENT_ERROR", err);
+      setMessage("Thank you. I will review the context and reply within one business day.");
+    } catch {
       setStatus("error");
-      setError(`Client error: ${err?.message || String(err)}`);
+      setMessage("Your request could not be sent. Please email matias@in7ruder.com.");
     }
   }
 
-  if (!config) {
-    return null;
-  }
+  const fieldClass = "mt-2 w-full border border-white/25 bg-transparent px-3.5 py-3 text-base text-white outline-none transition placeholder:text-white/35 focus:border-white focus:ring-0";
 
   return (
-    <section id="contact" className="py-16 border-t border-white/10">
-      <div className="grid gap-10 md:grid-cols-12">
-        <div className="md:col-span-5 self-center">
-          <p className="text-sm text-zinc-400">Contact</p>
-          <h2 className="mt-2 text-2xl md:text-3xl font-semibold tracking-tight">
-            {config.title}
-          </h2>
-          <p className="mt-3 text-zinc-300">{config.description}</p>
+    <form onSubmit={handleSubmit} className="border-t border-white/30 pt-8">
+      <div className="grid gap-6 sm:grid-cols-2">
+        <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/55">Name<input name="name" type="text" required maxLength={80} autoComplete="name" className={fieldClass} /></label>
+        <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/55">Work email<input name="email" type="email" required maxLength={160} autoComplete="email" className={fieldClass} /></label>
+        <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/55">Company<input name="company" type="text" maxLength={120} autoComplete="organization" className={fieldClass} /></label>
+        <label className="text-xs font-semibold uppercase tracking-[0.12em] text-white/55">Area of interest
+          <select name="service" required value={selectedService} onChange={(event) => setSelectedService(event.target.value)} className={`${fieldClass} appearance-none`}>
+            <option value="" className="text-black">Select an engagement</option>
+            {serviceOptions.map((option) => <option key={option.value} value={option.value} className="text-black">{option.label}</option>)}
+          </select>
+        </label>
+      </div>
+      <label className="mt-6 block text-xs font-semibold uppercase tracking-[0.12em] text-white/55">What prompted the conversation?
+        <textarea name="message" required minLength={20} maxLength={2000} rows={4} placeholder="A short description of the situation is enough." className={`${fieldClass} resize-y normal-case tracking-normal`} />
+      </label>
+      <div className="absolute -left-[9999px]" aria-hidden="true"><label>Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label></div>
+      <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="max-w-sm text-xs leading-5 text-white/45">Your information is used only to assess and respond to this request.</p>
+        <button type="submit" disabled={status === "loading"} className="accent-inverse-cta shrink-0 justify-center disabled:cursor-wait disabled:opacity-60">
+          {status === "loading" ? "Sending..." : "Request a conversation"}
+        </button>
+      </div>
+      <div aria-live="polite" className="mt-4 min-h-6">{message && <p className={`text-sm font-medium ${status === "error" ? "text-[#ffaaa0]" : "text-white/75"}`}>{message}</p>}</div>
+    </form>
+  );
+}
+
+export default function Contact() {
+  return (
+    <section id="contact" className="bg-[var(--accent)] text-white">
+      <div className="page-wrap py-16 md:py-24">
+        <header className="max-w-3xl">
+          <p className="eyebrow eyebrow-dark">Start with context</p>
+          <h2 className="section-title serif-display mt-7">A useful first conversation.</h2>
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-white/65">Twenty minutes is enough to understand the situation, establish whether there is a fit and identify the next sensible step. I reply within one business day.</p>
+        </header>
+        <div className="mt-12 max-w-4xl">
+          <Suspense fallback={<div className="min-h-[30rem] border-t border-white/30" />}><ContactForm /></Suspense>
         </div>
-
-        <form onSubmit={handleSubmit} className="md:col-span-7 space-y-4">
-          <input
-            type="text"
-            name="website"
-            tabIndex={-1}
-            autoComplete="off"
-            className="hidden"
-          />
-
-          {config.fields.map((field) => (
-            <div key={field.name} className="flex flex-col gap-1">
-              <label className="text-sm text-zinc-300">{field.label}</label>
-
-              {field.type === "textarea" && (
-                <textarea
-                  name={field.name}
-                  required={field.required}
-                  rows={4}
-                  className="rounded-lg border border-white/10 bg-zinc-950/40 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20"
-                />
-              )}
-
-              {field.type === "select" && (
-                <select
-                  name={field.name}
-                  required={field.required}
-                  value={field.name === "service" ? serviceValue : ""}
-                  onChange={(e) => {
-                    if (field.name === "service") setServiceValue(e.target.value);
-                  }}
-                  className="rounded-lg border border-white/10 bg-zinc-950/40 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20"
-                >
-                  <option value="">Select an option</option>
-                  {field.options.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
-              )}
-
-              {field.type !== "textarea" && field.type !== "select" && (
-                <input
-                  type={field.type}
-                  name={field.name}
-                  required={field.required}
-                  className="rounded-lg border border-white/10 bg-zinc-950/40 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/20"
-                />
-              )}
-            </div>
-          ))}
-
-          <button
-            type="submit"
-            disabled={status === "loading"}
-            className="mt-4 inline-flex items-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-zinc-950 hover:bg-[var(--color-brand)] hover:!text-white transition-colors disabled:opacity-60"
-          >
-            {status === "loading" ? "Sending..." : config.submitLabel}
-          </button>
-
-          {status === "success" && (
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-              <p className="text-sm font-semibold text-white">
-                {config.successTitle || "Request sent"}
-              </p>
-              <p className="mt-1 text-sm text-zinc-300">
-                {config.successMessage ||
-                  "Thanks. I will reply soon with next steps."}
-              </p>
-            </div>
-          )}
-
-          {status === "error" && <p className="text-sm text-red-400">{error}</p>}
-
-          <p className="text-xs text-zinc-500">{config.privacyNote}</p>
-        </form>
       </div>
     </section>
   );

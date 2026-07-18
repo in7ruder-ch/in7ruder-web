@@ -14,19 +14,7 @@ export default function sitemap() {
       priority: 1.0,
     },
     {
-      url: `${BASE_URL}/work`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/services/secure-fullstack`,
-      lastModified,
-      changeFrequency: "monthly",
-      priority: 0.85,
-    },
-    {
-      url: `${BASE_URL}/services/social-engineering-training`,
+      url: `${BASE_URL}/services/social-engineering-readiness`,
       lastModified,
       changeFrequency: "monthly",
       priority: 0.85,

@@ -26,6 +26,7 @@ const copyByLanguage = {
           "Website and connection data: IP address, date and time, requested address, HTTP and device information, referrer, response status and operational security logs.",
           "Contact form data: name, work email address, optional company name, selected area of interest, message and language preference.",
           "Correspondence data: the content and metadata of subsequent email exchanges and any information you choose to provide.",
+          "Aggregate analytics data: page address, timestamp, filtered query parameters, referrer, approximate location, browser, operating system and device type.",
         ],
       },
       {
@@ -40,7 +41,7 @@ const copyByLanguage = {
       {
         title: "Service providers and transfers",
         paragraphs: [
-          "Vercel Inc. hosts and delivers the website and executes the contact form endpoint. Vercel may process connection, request and operational log data, as well as the form submission while it is transmitted to the email service.",
+          "Vercel Inc. hosts and delivers the website, executes the contact form endpoint and provides privacy-focused Web Analytics. Vercel may process connection, request and operational log data, aggregate page-view data, and the form submission while it is transmitted to the email service.",
           "Namecheap Inc. provides Private Email. Enquiry content and subsequent correspondence are transmitted to and stored in that email service.",
           "These providers and their subprocessors may process data outside Switzerland, including in the United States. Where required, cross-border processing is covered by contractual safeguards described in the providers' data processing terms. in7ruder does not sell personal data.",
         ],
@@ -55,13 +56,14 @@ const copyByLanguage = {
         title: "Retention",
         paragraphs: [
           "Enquiries that do not lead to an engagement are normally deleted within 12 months after the last substantive contact. Correspondence and records connected with an engagement are retained for the period required by Swiss accounting, contractual or other legal obligations, generally up to 10 years where those obligations apply.",
-          "in7ruder does not maintain a separate archive of website access logs. Vercel retains runtime logs for the period applicable to the account plan and may retain security or service data as described in its own terms. Data may be kept longer when necessary to establish, exercise or defend legal claims, or when deletion is temporarily restricted by law.",
+          "in7ruder does not maintain a separate archive of website access logs. Vercel retains runtime logs and aggregate analytics for the periods applicable to the account plan. The request-derived visitor identifier used by Web Analytics is discarded after 24 hours. Data may be kept longer when necessary to establish, exercise or defend legal claims, or when deletion is temporarily restricted by law.",
         ],
       },
       {
-        title: "Cookies and analytics",
+        title: "Analytics and cookies",
         paragraphs: [
-          "in7ruder does not currently use advertising trackers, website analytics or non-essential cookies. The site does not embed a booking platform, social feed or marketing pixel.",
+          "in7ruder uses Vercel Web Analytics to understand aggregate page views and successful contact form submissions. Web Analytics does not use third-party cookies and does not provide in7ruder with information that identifies an individual visitor. The contact conversion event contains only the selected service and interface language. Names, email addresses, company names and message content are not sent to analytics.",
+          "The site does not use advertising trackers, marketing pixels or non-essential cookies, and it does not embed a booking platform or social feed.",
           "Links to third-party websites, including LinkedIn, only transfer you to those services when you choose to follow them. Their own privacy terms then apply.",
         ],
       },
@@ -113,6 +115,7 @@ const copyByLanguage = {
           "Website- und Verbindungsdaten: IP-Adresse, Datum und Uhrzeit, aufgerufene Adresse, HTTP- und Geräteinformationen, Referrer, Antwortstatus sowie technische Sicherheitsprotokolle.",
           "Daten aus dem Kontaktformular: Name, geschäftliche E-Mail-Adresse, optionaler Unternehmensname, ausgewähltes Interessengebiet, Nachricht und Spracheinstellung.",
           "Korrespondenzdaten: Inhalt und Metadaten der anschliessenden E-Mail-Kommunikation sowie weitere freiwillig mitgeteilte Informationen.",
+          "Aggregierte Analysedaten: Seitenadresse, Zeitstempel, gefilterte Abfrageparameter, Referrer, ungefährer Standort, Browser, Betriebssystem und Gerätetyp.",
         ],
       },
       {
@@ -127,7 +130,7 @@ const copyByLanguage = {
       {
         title: "Dienstleister und Auslandbekanntgabe",
         paragraphs: [
-          "Vercel Inc. hostet und verteilt die Website und führt den Endpunkt des Kontaktformulars aus. Dabei kann Vercel Verbindungs-, Anfrage- und technische Protokolldaten sowie die Formularübermittlung auf dem Weg zum E-Mail-Dienst bearbeiten.",
+          "Vercel Inc. hostet und verteilt die Website, führt den Endpunkt des Kontaktformulars aus und stellt eine datenschutzorientierte Webanalyse bereit. Dabei kann Vercel Verbindungs-, Anfrage- und technische Protokolldaten, aggregierte Seitenaufrufe sowie die Formularübermittlung auf dem Weg zum E-Mail-Dienst bearbeiten.",
           "Namecheap Inc. stellt Private Email bereit. Der Inhalt einer Anfrage und die anschliessende Korrespondenz werden an diesen E-Mail-Dienst übermittelt und dort gespeichert.",
           "Diese Anbieter und deren Unterauftragsbearbeiter können Daten ausserhalb der Schweiz bearbeiten, insbesondere in den USA. Soweit erforderlich, stützt sich die grenzüberschreitende Bearbeitung auf die in den Datenverarbeitungsbedingungen der Anbieter beschriebenen vertraglichen Garantien. in7ruder verkauft keine Personendaten.",
         ],
@@ -142,13 +145,14 @@ const copyByLanguage = {
         title: "Aufbewahrung",
         paragraphs: [
           "Anfragen, die nicht zu einem Engagement führen, werden in der Regel spätestens 12 Monate nach dem letzten inhaltlichen Kontakt gelöscht. Korrespondenz und Unterlagen zu einem Engagement werden so lange aufbewahrt, wie es schweizerische Buchführungs-, Vertrags- oder andere gesetzliche Pflichten verlangen, in der Regel bis zu 10 Jahre, sofern diese Pflichten anwendbar sind.",
-          "in7ruder führt kein separates Archiv der Website-Zugriffsprotokolle. Vercel bewahrt Laufzeitprotokolle während der für das verwendete Kontomodell geltenden Dauer auf und kann Sicherheits- oder Servicedaten gemäss den eigenen Bedingungen speichern. Daten können länger aufbewahrt werden, wenn dies zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen erforderlich ist oder eine Löschung gesetzlich eingeschränkt ist.",
+          "in7ruder führt kein separates Archiv der Website-Zugriffsprotokolle. Vercel bewahrt Laufzeitprotokolle und aggregierte Analysedaten während der für das verwendete Kontomodell geltenden Dauer auf. Die aus der Anfrage abgeleitete Besucherkennung der Webanalyse wird nach 24 Stunden verworfen. Daten können länger aufbewahrt werden, wenn dies zur Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen erforderlich ist oder eine Löschung gesetzlich eingeschränkt ist.",
         ],
       },
       {
-        title: "Cookies und Analyse",
+        title: "Webanalyse und Cookies",
         paragraphs: [
-          "in7ruder verwendet derzeit keine Werbetracker, Website-Analyse und keine nicht notwendigen Cookies. Die Website bindet keine Buchungsplattform, Social-Media-Feeds oder Marketing-Pixel ein.",
+          "in7ruder verwendet Vercel Web Analytics, um aggregierte Seitenaufrufe und erfolgreich gesendete Kontaktformulare zu messen. Web Analytics verwendet keine Drittanbieter-Cookies und stellt in7ruder keine Informationen bereit, die einzelne Besuchende identifizieren. Das Conversion-Event des Kontaktformulars enthält nur die ausgewählte Leistung und die Sprache der Benutzeroberfläche. Namen, E-Mail-Adressen, Unternehmensnamen und Nachrichteninhalte werden nicht an die Webanalyse übermittelt.",
+          "Die Website verwendet keine Werbetracker, Marketing-Pixel oder nicht notwendigen Cookies und bindet keine Buchungsplattform oder Social-Media-Feeds ein.",
           "Links zu Websites Dritter, einschliesslich LinkedIn, leiten Sie erst dann zu diesen Diensten weiter, wenn Sie den Link aktiv aufrufen. Ab diesem Zeitpunkt gelten deren eigene Datenschutzbestimmungen.",
         ],
       },

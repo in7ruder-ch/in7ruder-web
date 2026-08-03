@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
+import { Analytics } from "@vercel/analytics/next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { LANGUAGES, SITE_URL, isLanguage, localizedUrl } from "@/lib/i18n";
@@ -57,6 +58,7 @@ export default async function LanguageLayout({ children, params }) {
         <Navbar lang={lang} />
         <main>{children}</main>
         <Footer lang={lang} />
+        <Analytics />
       </body>
     </html>
   );

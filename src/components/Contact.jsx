@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { Suspense, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { track } from "@vercel/analytics";
 
 const copyByLanguage = {
   en: {
@@ -62,6 +63,7 @@ const aliases = {
 
 function ContactForm({ lang }) {
   const copy = copyByLanguage[lang] || copyByLanguage.en;
+  const router = useRouter();
   const searchParams = useSearchParams();
   const incoming = searchParams.get("service") || "";
   const normalizedIncoming = incoming.toLowerCase().trim().replace(/\s+/g, "-");
@@ -94,6 +96,15 @@ function ContactForm({ lang }) {
       setSelectedService("");
       setStatus("success");
       setMessage(copy.success);
+      try {
+        track("contact_form_submitted", {
+          language: lang,
+          service: String(payload.service || "not-specified"),
+        });
+      } catch {
+        // Analytics must never change the result of a successful enquiry.
+      }
+      router.push(`/${lang}/thank-you`);
     } catch {
       setStatus("error");
       setMessage(copy.error);

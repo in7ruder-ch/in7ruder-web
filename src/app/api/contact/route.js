@@ -15,6 +15,7 @@ const allowedServices = new Set([
 ]);
 
 const emailPattern = /^[^\s@\r\n]+@[^\s@\r\n]+\.[^\s@\r\n]+$/;
+const NO_STORE_HEADERS = { "Cache-Control": "no-store, max-age=0" };
 
 const errors = {
   en: { rate: "Too many requests. Please try again later.", fields: "Please check the required fields and try again.", unavailable: "Contact is temporarily unavailable. Please email matias@in7ruder.com." },
@@ -23,6 +24,20 @@ const errors = {
 
 function clean(value, maxLength) {
   return String(value || "").trim().slice(0, maxLength);
+}
+
+function respond(payload, status = 200, headers = {}) {
+  return NextResponse.json(payload, { status, headers: { ...NO_STORE_HEADERS, ...headers } });
+}
+
+function hasAllowedOrigin(request) {
+  const origin = request.headers.get("origin");
+  if (!origin) return true;
+  try {
+    return new URL(origin).host === request.headers.get("host");
+  } catch {
+    return false;
+  }
 }
 
 function getClientIp(request) {
@@ -53,22 +68,46 @@ function escapeHtml(value) {
 
 export async function POST(request) {
   try {
+    if (!hasAllowedOrigin(request)) {
+      return respond({ ok: false, error: "Invalid request origin." }, 403);
+    }
+
     const contentType = request.headers.get("content-type") || "";
     if (!contentType.includes("application/json")) {
-      return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 415 });
+      return respond({ ok: false, error: "Invalid request." }, 415);
+    }
+
+    const declaredLength = Number(request.headers.get("content-length") || 0);
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+      return respond({ ok: false, error: "Request is too large." }, 413);
     }
 
     const rawBody = await request.text();
-    if (rawBody.length > MAX_BODY_BYTES) {
-      return NextResponse.json({ ok: false, error: "Request is too large." }, { status: 413 });
+    if (new TextEncoder().encode(rawBody).byteLength > MAX_BODY_BYTES) {
+      return respond({ ok: false, error: "Request is too large." }, 413);
     }
-    const body = JSON.parse(rawBody);
-    if (clean(body.website, 200)) return NextResponse.json({ ok: true });
+
+    let body;
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      return respond({ ok: false, error: "Invalid JSON body." }, 400);
+    }
+
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return respond({ ok: false, error: "Invalid request." }, 400);
+    }
+
+    if (clean(body.website, 200)) return respond({ ok: true });
     const language = body.lang === "de" ? "de" : "en";
     const errorCopy = errors[language];
 
     if (!isAllowed(getClientIp(request))) {
-      return NextResponse.json({ ok: false, error: errorCopy.rate }, { status: 429 });
+      return respond(
+        { ok: false, error: errorCopy.rate },
+        429,
+        { "Retry-After": String(Math.ceil(RATE_LIMIT_WINDOW_MS / 1000)) },
+      );
     }
 
     const name = clean(body.name, 80);
@@ -78,13 +117,13 @@ export async function POST(request) {
     const message = clean(body.message, 2000);
 
     if (!name || !emailPattern.test(email) || !allowedServices.has(service) || message.length < 20) {
-      return NextResponse.json({ ok: false, error: errorCopy.fields }, { status: 400 });
+      return respond({ ok: false, error: errorCopy.fields }, 400);
     }
 
     const requiredEnvironment = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "MAIL_FROM", "MAIL_TO"];
     if (requiredEnvironment.some((key) => !process.env[key])) {
       console.error("CONTACT_CONFIGURATION_ERROR");
-      return NextResponse.json({ ok: false, error: errorCopy.unavailable }, { status: 503 });
+      return respond({ ok: false, error: errorCopy.unavailable }, 503);
     }
 
     const transporter = nodemailer.createTransport({
@@ -94,13 +133,18 @@ export async function POST(request) {
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
       disableFileAccess: true,
       disableUrlAccess: true,
+      requireTLS: process.env.SMTP_SECURE !== "true",
+      connectionTimeout: 10_000,
+      greetingTimeout: 10_000,
+      socketTimeout: 20_000,
+      tls: { minVersion: "TLSv1.2", servername: process.env.SMTP_HOST },
     });
 
     const safe = { name: escapeHtml(name), email: escapeHtml(email), company: escapeHtml(company || "Not provided"), service: escapeHtml(service), message: escapeHtml(message) };
     const text = `Language: ${language}\nName: ${name}\nEmail: ${email}\nCompany: ${company || "Not provided"}\nService: ${service}\n\nContext:\n${message}`;
     const html = `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.5"><h2>New security call request</h2><p><strong>Language:</strong> ${language}</p><p><strong>Name:</strong> ${safe.name}</p><p><strong>Email:</strong> ${safe.email}</p><p><strong>Company:</strong> ${safe.company}</p><p><strong>Service:</strong> ${safe.service}</p><p><strong>Context:</strong></p><pre style="white-space:pre-wrap;background:#f3f5ef;padding:16px;border-radius:8px">${safe.message}</pre></div>`;
 
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: `"in7ruder" <${process.env.MAIL_FROM}>`,
       to: process.env.MAIL_TO,
       replyTo: email,
@@ -110,9 +154,12 @@ export async function POST(request) {
       headers: { "X-Auto-Response-Suppress": "All" },
     });
 
-    return NextResponse.json({ ok: true, messageId: info.messageId || null });
+    return respond({ ok: true });
   } catch (error) {
-    console.error("CONTACT_API_ERROR", error);
-    return NextResponse.json({ ok: false, error: "Server error. Please email matias@in7ruder.com." }, { status: 500 });
+    console.error("CONTACT_API_ERROR", {
+      name: error instanceof Error ? error.name : "UnknownError",
+      code: error && typeof error === "object" && "code" in error ? String(error.code) : "UNKNOWN",
+    });
+    return respond({ ok: false, error: "Server error. Please email matias@in7ruder.com." }, 500);
   }
 }

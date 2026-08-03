@@ -10,10 +10,12 @@ export default function FAQAccordion({ items }) {
       {items.map(([question, answer], index) => {
         const isOpen = openIndex === index;
         const panelId = `faq-panel-${index}`;
+        const buttonId = `faq-button-${index}`;
 
         return (
           <div key={question} className="border-b border-[var(--line)]">
             <button
+              id={buttonId}
               type="button"
               aria-expanded={isOpen}
               aria-controls={panelId}
@@ -27,7 +29,13 @@ export default function FAQAccordion({ items }) {
               </span>
             </button>
 
-            <div id={panelId} className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              aria-hidden={!isOpen}
+              className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+            >
               <div className="overflow-hidden">
                 <p className="max-w-2xl pb-7 pr-10 text-sm leading-7 text-[var(--muted)] md:text-base">{answer}</p>
               </div>

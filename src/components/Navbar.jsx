@@ -61,7 +61,7 @@ export default function Navbar({ lang = "en" }) {
             <span aria-hidden="true" className="h-7 w-px bg-[var(--line)]">
               <span className="sr-only">|</span>
             </span>
-            <div className="flex items-center gap-3" aria-label="Language selection">
+            <div className="flex items-center gap-3" role="group" aria-label="Language selection">
               {["en", "de"].map((language) => (
                 <Link
                   key={language}
@@ -76,7 +76,7 @@ export default function Navbar({ lang = "en" }) {
             </div>
           </nav>
 
-          <div className="relative z-50 ml-auto mr-3 flex items-center gap-2 md:hidden" aria-label="Language selection">
+          <div className="relative z-50 ml-auto mr-3 flex items-center gap-2 md:hidden" role="group" aria-label="Language selection">
             {["en", "de"].map((language) => (
               <Link
                 key={language}

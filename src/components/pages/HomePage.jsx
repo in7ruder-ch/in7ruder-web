@@ -41,8 +41,19 @@ function Arrow() { return <span aria-hidden="true">↗</span>; }
 export default function HomePage({ lang }) {
   const copy = content[lang] || content.en;
   const home = `/${lang}`;
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": `https://in7ruder.com/${lang}#faq`,
+    mainEntity: copy.faqs.map(([question, answer]) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: { "@type": "Answer", text: answer },
+    })),
+  };
   return (
     <div id="main-content" lang={lang}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <section className="border-b border-[var(--line)] bg-[var(--paper)]"><div className="page-wrap py-16 md:py-24 lg:py-28"><p className="eyebrow">{copy.hero.eyebrow}</p><div className="mt-8 max-w-5xl"><h1 className="display-title serif-display">{copy.hero.title}</h1><p className="mt-8 max-w-2xl text-lg leading-8 text-[var(--muted)] md:text-xl">{copy.hero.body}</p><div className="mt-9 flex flex-col gap-3 sm:flex-row"><Link href={`${home}/#contact`} className="button-primary">{copy.hero.primary} <Arrow /></Link><Link href={`${home}/#services`} className="button-secondary">{copy.hero.secondary}</Link></div></div></div></section>
 
       <section className="bg-[var(--ink)] text-white"><div className="page-wrap py-16 md:py-24"><div className="max-w-4xl"><p className="eyebrow eyebrow-dark">{copy.risk.eyebrow}</p><h2 className="section-title serif-display mt-7">{copy.risk.title}</h2><div className="mt-9 grid gap-6 border-t border-white/20 pt-8 text-base leading-7 text-white/70 md:grid-cols-2 md:gap-12 md:text-lg md:leading-8">{copy.risk.body.map((item) => <p key={item}>{item}</p>)}</div></div></div></section>

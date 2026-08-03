@@ -13,7 +13,7 @@ const copyByLanguage = {
     formatsHeader: ["Engagement formats", "Start with the decision that needs to improve."],
     formats: [["Focused workshop", "A practical session for a defined team or risk scenario, followed by clear response guidance."], ["Readiness engagement", "Training, authorized simulation and debrief combined into a structured improvement cycle."], ["Role-specific exercise", "Targeted preparation for exposed functions such as finance, executive support, IT, operations or customer-facing teams."]],
     method: ["How the work is run", "Realistic enough to be useful. Controlled enough to be safe."],
-    methodItems: [["Written authorization", "Audience, channels, scenarios, data handling, escalation contacts and safe stop conditions are agreed first."], ["Relevant pressure", "Exercises reflect genuine workflows without using humiliation, surprise or fear as teaching methods."], ["Practical debrief", "Participants understand the signals, decision points and reporting actions that matter after the exercise."], ["Management clarity", "Observations are translated into prioritized improvements, ownership and an appropriate next step."]],
+    methodItems: [["Written authorization", "Audience, channels, scenarios, data handling, escalation contacts and safe stop conditions are agreed first."], ["Relevant pressure", "Exercises reflect genuine workflows without using humiliation, surprise or fear as teaching methods."], ["Practical debrief", "Participants understand the signals, decision points and reporting actions that matter after the exercise."], ["Purpose-limited data", "Only information necessary for the exercise is collected. Access, secure transfer, retention and deletion are agreed during scoping, with material concerns escalated through named contacts."], ["Management clarity", "Observations are translated into prioritized improvements, ownership and an appropriate next step."]],
     faqHeader: ["Common questions", "Before we define the scenario."],
     faqs: [["Is this standard security awareness training?", "No. The engagement is built around realistic scenarios, decisions and reporting paths that are relevant to your organization. It is not a generic compliance presentation."], ["Can phishing simulations be included?", "Yes. Simulations are one method inside the wider readiness engagement. Authorization, audience, data handling, escalation paths and reporting are agreed before delivery."], ["Do you identify individual employees in reports?", "The default approach favors aggregated learning and operational improvement. Any individual-level reporting must have a clear purpose and be explicitly agreed in advance."], ["Can the content be adapted to a specific team?", "Yes. Finance, executive support, IT, operations and customer-facing teams face different pretexts and decision pressure. Scenarios are selected accordingly."], ["What does management receive?", "A concise readout covering observed behavior, relevant gaps, recommended improvements and appropriate next steps. The goal is a decision-ready output, not a leaderboard."]],
     final: ["Start with context", "Build readiness around the situations your people actually face.", "Schedule a conversation"],
@@ -28,7 +28,7 @@ const copyByLanguage = {
     formatsHeader: ["Engagement-Formate", "Beginnen Sie mit der Entscheidung, die sich verbessern soll."],
     formats: [["Fokussierter Workshop", "Eine praxisnahe Session für ein definiertes Team oder Risikoszenario mit klarer Anleitung für die Reaktion."], ["Readiness Engagement", "Training, autorisierte Simulation und Debrief als strukturierter Verbesserungszyklus."], ["Rollenspezifische Übung", "Gezielte Vorbereitung exponierter Funktionen wie Finanzen, Executive Support, IT, Operations oder kundennaher Teams."]],
     method: ["Durchführung", "Realistisch genug, um nützlich zu sein. Kontrolliert genug, um sicher zu bleiben."],
-    methodItems: [["Schriftliche Autorisierung", "Zielgruppe, Kanäle, Szenarien, Datenverarbeitung, Eskalationskontakte und Abbruchbedingungen werden zuerst vereinbart."], ["Relevanter Druck", "Übungen spiegeln reale Abläufe wider, ohne Blossstellung, Überraschung oder Angst als Lehrmethode einzusetzen."], ["Praktisches Debrief", "Teilnehmende verstehen nach der Übung die relevanten Signale, Entscheidungspunkte und Meldewege."], ["Klarheit für das Management", "Beobachtungen werden in priorisierte Verbesserungen, Verantwortlichkeiten und einen passenden nächsten Schritt übersetzt."]],
+    methodItems: [["Schriftliche Autorisierung", "Zielgruppe, Kanäle, Szenarien, Datenverarbeitung, Eskalationskontakte und Abbruchbedingungen werden zuerst vereinbart."], ["Relevanter Druck", "Übungen spiegeln reale Abläufe wider, ohne Blossstellung, Überraschung oder Angst als Lehrmethode einzusetzen."], ["Praktisches Debrief", "Teilnehmende verstehen nach der Übung die relevanten Signale, Entscheidungspunkte und Meldewege."], ["Zweckgebundene Datenverarbeitung", "Es werden nur die für die Übung erforderlichen Informationen erhoben. Zugriff, sichere Übermittlung, Aufbewahrung und Löschung werden im Scoping vereinbart; wesentliche Beobachtungen werden über benannte Kontakte eskaliert."], ["Klarheit für das Management", "Beobachtungen werden in priorisierte Verbesserungen, Verantwortlichkeiten und einen passenden nächsten Schritt übersetzt."]],
     faqHeader: ["Häufige Fragen", "Bevor wir das Szenario definieren."],
     faqs: [["Ist das ein gewöhnliches Security-Awareness-Training?", "Nein. Das Engagement basiert auf realistischen Szenarien, Entscheidungen und Meldewegen, die für Ihr Unternehmen relevant sind. Es ist keine allgemeine Compliance-Präsentation."], ["Können Phishing-Simulationen enthalten sein?", "Ja. Simulationen sind eine Methode innerhalb des umfassenderen Readiness Engagements. Autorisierung, Zielgruppe, Datenverarbeitung, Eskalationswege und Reporting werden vorab vereinbart."], ["Werden einzelne Mitarbeitende in Berichten identifiziert?", "Standardmässig stehen aggregiertes Lernen und operative Verbesserung im Vordergrund. Berichte auf Individualebene benötigen einen klaren Zweck und eine ausdrückliche vorherige Vereinbarung."], ["Können Inhalte an ein bestimmtes Team angepasst werden?", "Ja. Finanzen, Executive Support, IT, Operations und kundenahe Teams erleben unterschiedliche Vorwände und Entscheidungsdruck. Die Szenarien werden entsprechend ausgewählt."], ["Was erhält das Management?", "Ein kompaktes Readout mit beobachtetem Verhalten, relevanten Lücken, empfohlenen Verbesserungen und sinnvollen nächsten Schritten. Das Ergebnis dient Entscheidungen, nicht einer Rangliste."]],
     final: ["Mit Kontext beginnen", "Bauen Sie Bereitschaft für die Situationen auf, denen Ihre Mitarbeitenden tatsächlich begegnen.", "Erstgespräch vereinbaren"],
@@ -40,14 +40,28 @@ function Arrow() { return <span aria-hidden="true">↗</span>; }
 export async function generateMetadata({ params }) {
   const { lang } = await params;
   const copy = copyByLanguage[lang] || copyByLanguage.en;
-  return { title: copy.title, description: copy.description, alternates: alternatesFor(lang, "services/social-engineering-readiness"), openGraph: { type: "website", locale: lang === "de" ? "de_CH" : "en_CH", url: localizedUrl(lang, "services/social-engineering-readiness"), siteName: "in7ruder", title: `${copy.title} | in7ruder`, description: copy.description } };
+  const socialTitle = `${copy.title} | in7ruder`;
+  return {
+    title: copy.title,
+    description: copy.description,
+    alternates: alternatesFor(lang, "services/social-engineering-readiness"),
+    openGraph: { type: "website", locale: lang === "de" ? "de_CH" : "en_CH", url: localizedUrl(lang, "services/social-engineering-readiness"), siteName: "in7ruder", title: socialTitle, description: copy.description },
+    twitter: { card: "summary_large_image", title: socialTitle, description: copy.description },
+  };
 }
 
 export default async function SocialEngineeringReadinessPage({ params }) {
   const { lang } = await params;
   const copy = copyByLanguage[lang] || copyByLanguage.en;
   const base = `/${lang}`;
-  const jsonLd = { "@context": "https://schema.org", "@type": "Service", name: copy.title, description: copy.description, provider: { "@id": "https://in7ruder.com/#organization" }, url: localizedUrl(lang, "services/social-engineering-readiness"), areaServed: { "@type": "Country", name: "Switzerland" }, inLanguage: lang === "de" ? "de-CH" : "en-CH", category: "Cybersecurity" };
+  const serviceUrl = localizedUrl(lang, "services/social-engineering-readiness");
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "Service", "@id": `${serviceUrl}#service`, name: copy.title, description: copy.description, provider: { "@id": "https://in7ruder.com/#organization" }, url: serviceUrl, areaServed: { "@type": "Country", name: "Switzerland" }, inLanguage: lang === "de" ? "de-CH" : "en-CH", category: "Cybersecurity" },
+      { "@type": "FAQPage", "@id": `${serviceUrl}#faq`, mainEntity: copy.faqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) },
+    ],
+  };
   return (
     <div id="main-content" lang={lang}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

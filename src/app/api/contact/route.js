@@ -145,7 +145,7 @@ export async function POST(request) {
     const html = `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.5"><h2>New security call request</h2><p><strong>Language:</strong> ${language}</p><p><strong>Name:</strong> ${safe.name}</p><p><strong>Email:</strong> ${safe.email}</p><p><strong>Company:</strong> ${safe.company}</p><p><strong>Service:</strong> ${safe.service}</p><p><strong>Context:</strong></p><pre style="white-space:pre-wrap;background:#f3f5ef;padding:16px;border-radius:8px">${safe.message}</pre></div>`;
 
     await transporter.sendMail({
-      from: `"in7ruder" <${process.env.MAIL_FROM}>`,
+      from: `"IN7RUDER | New Security Enquiry" <${process.env.MAIL_FROM}>`,
       to: process.env.MAIL_TO,
       replyTo: email,
       subject: `Security call request: ${service}`,

@@ -111,7 +111,7 @@ function ContactForm({ lang }) {
     }
   }
 
-  const fieldClass = "mt-2 w-full border border-white/25 bg-transparent px-3.5 py-3 text-base text-white outline-none transition placeholder:text-white/35 focus:border-white focus:ring-0";
+  const fieldClass = "mt-2 w-full border border-white/25 bg-transparent px-3.5 py-3 text-base text-white transition placeholder:text-white/35 focus:border-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
 
   return (
     <form onSubmit={handleSubmit} className="border-t border-white/30 pt-8">

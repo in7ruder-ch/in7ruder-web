@@ -121,6 +121,29 @@ button, input, select, textarea { font: inherit; }
   color: var(--accent);
 }
 
+.legal-section li::marker {
+  color: var(--accent);
+}
+
+.legal-title {
+  hyphens: auto;
+  overflow-wrap: anywhere;
+}
+
+.legal-link {
+  border-bottom: 1px solid currentColor;
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding-bottom: 0.1rem;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.legal-link:hover {
+  color: var(--accent);
+}
+
 .button-primary,
 .button-secondary {
   display: inline-flex;

@@ -6,6 +6,9 @@ const GONE_PATHS = new Set([
   "/blog.html",
   "/work",
   "/services/secure-fullstack",
+  "/resources/OWASP_Developer_Guide.pdf",
+  "/resources/OWASP_Testing_Guide.pdf",
+  "/resources/OWASP_Web_Application_Security.pdf",
 ]);
 
 export function middleware(req) {

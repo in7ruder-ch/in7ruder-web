@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -21,6 +22,7 @@ const copyByLanguage = {
     prompt: "What prompted the conversation?",
     placeholder: "A short description of the situation is enough.",
     privacy: "Your information is used only to assess and respond to this request.",
+    privacyLink: "Read the Privacy Notice",
     send: "Request a conversation",
     sending: "Sending...",
     success: "Thank you. I will review the context and reply within one business day.",
@@ -42,7 +44,8 @@ const copyByLanguage = {
     select: "Leistung auswählen",
     prompt: "Was hat das Gespräch ausgelöst?",
     placeholder: "Eine kurze Beschreibung der Situation genügt.",
-    privacy: "Ihre Angaben werden ausschließlich zur Prüfung und Beantwortung Ihrer Anfrage verwendet.",
+    privacy: "Ihre Angaben werden ausschliesslich zur Prüfung und Beantwortung Ihrer Anfrage verwendet.",
+    privacyLink: "Datenschutzerklärung lesen",
     send: "Erstgespräch anfragen",
     sending: "Wird gesendet...",
     success: "Vielen Dank. Ich prüfe Ihre Anfrage und antworte innerhalb eines Werktages.",
@@ -117,7 +120,12 @@ function ContactForm({ lang }) {
       </label>
       <div className="absolute -left-[9999px]" aria-hidden="true"><label>Website<input name="website" type="text" tabIndex={-1} autoComplete="off" /></label></div>
       <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-        <p className="max-w-sm text-xs leading-5 text-white/55">{copy.privacy}</p>
+        <p className="max-w-sm text-xs leading-5 text-white/60">
+          {copy.privacy}{" "}
+          <Link href={`/${lang}/privacy`} className="border-b border-white/45 pb-px text-white transition hover:border-white hover:text-white">
+            {copy.privacyLink}
+          </Link>
+        </p>
         <button type="submit" disabled={status === "loading"} className="accent-inverse-cta shrink-0 justify-center disabled:cursor-wait disabled:opacity-60">{status === "loading" ? copy.sending : copy.send}</button>
       </div>
       <div aria-live="polite" className="mt-4 min-h-6">{message && <p className={`text-sm font-medium ${status === "error" ? "text-[#ffaaa0]" : "text-white/80"}`}>{message}</p>}</div>

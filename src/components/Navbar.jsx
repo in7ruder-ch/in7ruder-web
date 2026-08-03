@@ -14,7 +14,7 @@ const navigation = [
 
 const labels = {
   en: { services: "Services", approach: "Approach", about: "About", contact: "Contact", open: "Open navigation", close: "Close navigation", skip: "Skip to content" },
-  de: { services: "Leistungen", approach: "Arbeitsweise", about: "Über mich", contact: "Kontakt", open: "Navigation öffnen", close: "Navigation schließen", skip: "Zum Inhalt springen" },
+  de: { services: "Leistungen", approach: "Arbeitsweise", about: "Über mich", contact: "Kontakt", open: "Navigation öffnen", close: "Navigation schliessen", skip: "Zum Inhalt springen" },
 };
 
 export default function Navbar({ lang = "en" }) {

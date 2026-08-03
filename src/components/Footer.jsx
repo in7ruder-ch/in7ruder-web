@@ -1,6 +1,6 @@
 const footerCopy = {
-  en: { email: "Email Matias at matias@in7ruder.com", linkedin: "Matias Vanarelli on LinkedIn", statement: "Independent security practice based in Switzerland." },
-  de: { email: "E-Mail an Matias: matias@in7ruder.com", linkedin: "Matias Vanarelli auf LinkedIn", statement: "Unabhängige Security-Boutique mit Sitz in der Schweiz." },
+  en: { email: "Email Matias at matias@in7ruder.com", linkedin: "Matias Vanarelli on LinkedIn", privacy: "Privacy", legal: "Legal", statement: "Independent security practice based in Switzerland." },
+  de: { email: "E-Mail an Matias: matias@in7ruder.com", linkedin: "Matias Vanarelli auf LinkedIn", privacy: "Datenschutz", legal: "Impressum", statement: "Unabhängige Security-Boutique mit Sitz in der Schweiz." },
 };
 
 export default function Footer({ lang = "en" }) {
@@ -23,7 +23,12 @@ export default function Footer({ lang = "en" }) {
             <span>LinkedIn</span>
           </a>
         </div>
-        <p className="mt-7 border-t border-[var(--line)] pt-5 text-center text-xs text-[var(--muted)]">© {new Date().getFullYear()} in7ruder. {copy.statement}</p>
+        <nav aria-label={lang === "de" ? "Rechtliche Informationen" : "Legal information"} className="mt-7 flex items-center justify-center gap-4 border-t border-[var(--line)] pt-5 text-xs text-[var(--muted)]">
+          <a href={`/${lang}/privacy`} className="footer-link">{copy.privacy}</a>
+          <span aria-hidden="true" className="text-[var(--line)]">|</span>
+          <a href={`/${lang}/legal`} className="footer-link">{copy.legal}</a>
+        </nav>
+        <p className="mt-4 text-center text-xs text-[var(--muted)]">© {new Date().getFullYear()} in7ruder. {copy.statement}</p>
       </div>
     </footer>
   );
